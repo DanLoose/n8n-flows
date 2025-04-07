@@ -32,6 +32,40 @@ flows/
     └── generate_ai_image.json
 ```
 
+## Tools and AI Services
+
+### AI Models and Services
+| Service | Project | Purpose |
+|---------|---------|---------|
+| GPT-4 | Personal Assistant | Intelligent request processing and routing |
+| GPT-4 | Shorts Generator | Video prompt generation and optimization |
+| Midjourney (via PiAPI) | Shorts Generator | High-quality image generation |
+| Qubico/flux1-dev-advanced | Shorts Generator | Image upscaling and enhancement |
+| Kling AI | Shorts Generator | Image-to-video conversion |
+| OpenAI | Personal Assistant | Content creation and analysis |
+| Creatomate | Shorts Generator | AI-powered video rendering and composition |
+
+### Communication Platforms
+| Platform | Project | Purpose |
+|----------|---------|---------|
+| Telegram | Personal Assistant | User interaction and command interface |
+| Gmail | Personal Assistant | Email management and sending |
+| Calendar | Personal Assistant | Event scheduling and management |
+
+### Content Creation and Publishing
+| Service | Project | Purpose |
+|---------|---------|---------|
+| YouTube | Shorts Generator | Video publishing and distribution |
+| Google Sheets | Shorts Generator | Content planning and tracking |
+
+### Development and Automation
+| Tool | Project | Purpose |
+|------|---------|---------|
+| n8n | Both | Workflow automation and orchestration |
+| JWT | Shorts Generator | API authentication |
+| HTTP Requests | Both | API communication |
+| Memory Buffer | Personal Assistant | Conversation context management |
+
 ## Getting Started
 Each project has its own detailed documentation and setup instructions. Please refer to the specific README files:
 
