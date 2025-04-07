@@ -1,0 +1,912 @@
+{
+    "nodes": [
+        {
+            "parameters": {
+                "method": "POST",
+                "url": "https://api.piapi.ai/api/v1/task",
+                "authentication": "genericCredentialType",
+                "genericAuthType": "httpHeaderAuth",
+                "sendBody": true,
+                "specifyBody": "json",
+                "jsonBody": "={\n    \"model\": \"midjourney\",\n    \"task_type\": \"imagine\",\n    \"input\": {\n        \"prompt\": \"{{ $json.message.content }}\",\n        \"aspect_ratio\": \"9:16\",\n        \"skip_prompt_check\": false\n    }\n}",
+                "options": {}
+            },
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 4.2,
+            "position": [
+                1928,
+                -140
+            ],
+            "id": "f344d117-8274-4057-bd78-70db8c6540c0",
+            "name": "imagine",
+            "retryOnFail": false,
+            "waitBetweenTries": 5000,
+            "alwaysOutputData": false,
+            "credentials": {
+                "httpHeaderAuth": {
+                    "id": "MiTykyMsfwebvGOK",
+                    "name": "PiAPI key"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "method": "POST",
+                "url": "https://api.piapi.ai/api/v1/task",
+                "authentication": "genericCredentialType",
+                "genericAuthType": "httpHeaderAuth",
+                "sendBody": true,
+                "specifyBody": "json",
+                "jsonBody": "={\n    \"model\": \"Qubico/flux1-dev-advanced\",\n    \"task_type\": \"fill-outpaint\",\n    \"input\": {\n        \"prompt\": \"{{ $json.message.content.prompt }}\",\n        \"negative_prompt\": \"blur, objects, distractions, non-realistc, cartoon, soft shapes, soft textures\",\n        \"image\": \"{{ $('Get Images link flux').item.json.data.output.temporary_image_urls[2] }}\",\n        \"custom_settings\": [ \n            {\n                \"setting_type\": \"outpaint\",\n                \"outpaint_left\": 280,\n                \"outpaint_right\": 280,\n                \"outpaint_top\": 480,\n                \"outpaint_bottom\": 480\n            }\n        ]\n    }\n}",
+                "options": {}
+            },
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 4.2,
+            "position": [
+                3184,
+                -140
+            ],
+            "id": "0da97230-a514-45aa-98d4-0184e3b2cf26",
+            "name": "upscale",
+            "retryOnFail": false,
+            "waitBetweenTries": 5000,
+            "alwaysOutputData": false,
+            "credentials": {
+                "httpHeaderAuth": {
+                    "id": "MiTykyMsfwebvGOK",
+                    "name": "PiAPI key"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "amount": 15
+            },
+            "type": "n8n-nodes-base.wait",
+            "typeVersion": 1.1,
+            "position": [
+                2148,
+                -140
+            ],
+            "id": "b2fba8e7-7642-4d88-afd1-99c201b72df4",
+            "name": "Wait 15 seconds",
+            "webhookId": "7050471f-6ad9-46d0-ad2c-341f32c90752"
+        },
+        {
+            "parameters": {
+                "amount": 15
+            },
+            "type": "n8n-nodes-base.wait",
+            "typeVersion": 1.1,
+            "position": [
+                3404,
+                -140
+            ],
+            "id": "5d1d6cfb-bc4b-4788-891f-ff571a43d8e3",
+            "name": "Wait 15 seconds1",
+            "webhookId": "7050471f-6ad9-46d0-ad2c-341f32c90752"
+        },
+        {
+            "parameters": {
+                "url": "=https://api.piapi.ai/api/v1/task/{{ $json.data.task_id }}",
+                "authentication": "genericCredentialType",
+                "genericAuthType": "httpHeaderAuth",
+                "options": {}
+            },
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 4.2,
+            "position": [
+                2368,
+                -215
+            ],
+            "id": "5facf6cf-d76c-4d30-b7a3-f129494c1894",
+            "name": "Get Images link flux",
+            "credentials": {
+                "httpHeaderAuth": {
+                    "id": "MiTykyMsfwebvGOK",
+                    "name": "PiAPI key"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "url": "=https://api.piapi.ai/api/v1/task/{{ $json.data.task_id }}",
+                "authentication": "genericCredentialType",
+                "genericAuthType": "httpHeaderAuth",
+                "options": {}
+            },
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 4.2,
+            "position": [
+                3624,
+                -215
+            ],
+            "id": "232c649c-2fe5-427e-8a1c-8053eca0a31c",
+            "name": "get flux upscaled ",
+            "credentials": {
+                "httpHeaderAuth": {
+                    "id": "MiTykyMsfwebvGOK",
+                    "name": "PiAPI key"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "rules": {
+                    "values": [
+                        {
+                            "conditions": {
+                                "options": {
+                                    "caseSensitive": true,
+                                    "leftValue": "",
+                                    "typeValidation": "strict",
+                                    "version": 2
+                                },
+                                "conditions": [
+                                    {
+                                        "id": "b790e07b-91a7-4a6a-914e-938fcda67144",
+                                        "leftValue": "={{ $json.data.status }}",
+                                        "rightValue": "failed",
+                                        "operator": {
+                                            "type": "string",
+                                            "operation": "equals",
+                                            "name": "filter.operator.equals"
+                                        }
+                                    }
+                                ],
+                                "combinator": "and"
+                            },
+                            "renameOutput": true,
+                            "outputKey": "failed"
+                        },
+                        {
+                            "conditions": {
+                                "options": {
+                                    "caseSensitive": true,
+                                    "leftValue": "",
+                                    "typeValidation": "strict",
+                                    "version": 2
+                                },
+                                "conditions": [
+                                    {
+                                        "id": "210a1886-de09-4577-8fe7-3d5a086485bc",
+                                        "leftValue": "={{ $json.data.status }}",
+                                        "rightValue": "completed",
+                                        "operator": {
+                                            "type": "string",
+                                            "operation": "equals",
+                                            "name": "filter.operator.equals"
+                                        }
+                                    }
+                                ],
+                                "combinator": "and"
+                            },
+                            "renameOutput": true,
+                            "outputKey": "finished"
+                        },
+                        {
+                            "conditions": {
+                                "options": {
+                                    "caseSensitive": true,
+                                    "leftValue": "",
+                                    "typeValidation": "strict",
+                                    "version": 2
+                                },
+                                "conditions": [
+                                    {
+                                        "leftValue": "={{ $json.data.status }}",
+                                        "rightValue": "processing",
+                                        "operator": {
+                                            "type": "string",
+                                            "operation": "equals"
+                                        },
+                                        "id": "9540260a-ba26-4469-bd9e-2e768989fc4b"
+                                    }
+                                ],
+                                "combinator": "and"
+                            },
+                            "renameOutput": true,
+                            "outputKey": "processing"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.switch",
+            "typeVersion": 3.2,
+            "position": [
+                2588,
+                -140
+            ],
+            "id": "e2951a61-5613-44fa-995e-a10d81edb0de",
+            "name": "repeat until done"
+        },
+        {
+            "parameters": {
+                "rules": {
+                    "values": [
+                        {
+                            "conditions": {
+                                "options": {
+                                    "caseSensitive": true,
+                                    "leftValue": "",
+                                    "typeValidation": "strict",
+                                    "version": 2
+                                },
+                                "conditions": [
+                                    {
+                                        "id": "b790e07b-91a7-4a6a-914e-938fcda67144",
+                                        "leftValue": "={{ $json.data.status }}",
+                                        "rightValue": "failed",
+                                        "operator": {
+                                            "type": "string",
+                                            "operation": "equals",
+                                            "name": "filter.operator.equals"
+                                        }
+                                    }
+                                ],
+                                "combinator": "and"
+                            },
+                            "renameOutput": true,
+                            "outputKey": "failed"
+                        },
+                        {
+                            "conditions": {
+                                "options": {
+                                    "caseSensitive": true,
+                                    "leftValue": "",
+                                    "typeValidation": "strict",
+                                    "version": 2
+                                },
+                                "conditions": [
+                                    {
+                                        "id": "210a1886-de09-4577-8fe7-3d5a086485bc",
+                                        "leftValue": "={{ $json.data.status }}",
+                                        "rightValue": "completed",
+                                        "operator": {
+                                            "type": "string",
+                                            "operation": "equals",
+                                            "name": "filter.operator.equals"
+                                        }
+                                    }
+                                ],
+                                "combinator": "and"
+                            },
+                            "renameOutput": true,
+                            "outputKey": "finished"
+                        },
+                        {
+                            "conditions": {
+                                "options": {
+                                    "caseSensitive": true,
+                                    "leftValue": "",
+                                    "typeValidation": "strict",
+                                    "version": 2
+                                },
+                                "conditions": [
+                                    {
+                                        "leftValue": "={{ $json.data.status }}",
+                                        "rightValue": "processing",
+                                        "operator": {
+                                            "type": "string",
+                                            "operation": "equals"
+                                        },
+                                        "id": "9540260a-ba26-4469-bd9e-2e768989fc4b"
+                                    }
+                                ],
+                                "combinator": "and"
+                            },
+                            "renameOutput": true,
+                            "outputKey": "processing"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.switch",
+            "typeVersion": 3.2,
+            "position": [
+                3844,
+                -140
+            ],
+            "id": "9560e7e3-43e4-4720-b560-7104976c5240",
+            "name": "repeat until done1"
+        },
+        {
+            "parameters": {
+                "workflowInputs": {
+                    "values": [
+                        {
+                            "name": "subject"
+                        },
+                        {
+                            "name": "theme"
+                        }
+                    ]
+                }
+            },
+            "type": "n8n-nodes-base.executeWorkflowTrigger",
+            "typeVersion": 1.1,
+            "position": [
+                -300,
+                -140
+            ],
+            "id": "d9199ed3-8f3f-4f29-99b9-055054788599",
+            "name": "When Executed by Another Workflow"
+        },
+        {
+            "parameters": {
+                "assignments": {
+                    "assignments": [
+                        {
+                            "id": "2a0d3770-c557-4315-9b4e-37487240b542",
+                            "name": "image_generated",
+                            "value": "={{ $json.data.output.image_url }}",
+                            "type": "string"
+                        },
+                        {
+                            "id": "7e8565b8-ab78-4ced-9a77-6d85e7c2842e",
+                            "name": "image_prompt",
+                            "value": "={{ $('Create image prompt').item.json.message.content }}",
+                            "type": "string"
+                        },
+                        {
+                            "id": "bd46af11-df03-4c4d-a4aa-84c4f619b43c",
+                            "name": "cenario_prompt",
+                            "value": "={{ $('Cenario Prompt Generator').item.json.message.content.prompt }}",
+                            "type": "string"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.set",
+            "typeVersion": 3.4,
+            "position": [
+                4064,
+                -140
+            ],
+            "id": "2bba72d2-a7e4-444a-8740-04193d841db9",
+            "name": "Set Response"
+        },
+        {
+            "parameters": {
+                "modelId": {
+                    "__rl": true,
+                    "value": "gpt-3.5-turbo",
+                    "mode": "list",
+                    "cachedResultName": "GPT-3.5-TURBO"
+                },
+                "messages": {
+                    "values": [
+                        {
+                            "content": "=**Objective:**  \nYou are a master at transforming **character-focused AI-generated image prompts** into **hyper-fidelity, visually striking, stereotype-driven environment prompts** designed for viral TikTok content. Your task is to analyze a **character-centric prompt** and generate a complementary **environment-focused prompt** while maintaining the same level of **ultra-realistic 8K detail, dramatic composition, and thematic exaggeration**—whether cultural, mythical, futuristic, or beyond.\n\n---\n\n### **Key Guidelines:**\n\n1. **Expand the Scene with a Full-Scale Environment**  \n   - Shift focus from the character to a **highly detailed, immersive setting** that enhances the theme or concept (e.g., zodiac prison, mythical forest, post-apocalyptic metropolis).  \n   - Capture a **grand, cinematic view** that retains depth, movement, and storytelling.  \n   - Avoid distracting elements (e.g., random animals or out-of-place objects) unless they reinforce the environment’s narrative.\n\n2. **Hyper-Realistic 8K Detail**  \n   - Render every texture, reflection, and lighting effect with **hyper fidelity**—from weathered concrete walls to swirling cosmic skies.  \n   - Use **dynamic HDR lighting, atmospheric effects** (fog, neon glow, embers, magical auras, etc.), and **cinematic shading** to create a dramatic, larger-than-life impact.\n\n3. **Bold Stereotypes & Thematic Exaggeration**  \n   - The setting should **immediately convey its theme** (e.g., a high-tech prison with glowing force fields, an enchanted forest with towering mushrooms).  \n   - Use **bold, exaggerated visuals** (e.g., sky-piercing skyscrapers, neon-soaked billboards, oversized gothic spires) to reinforce the environment’s identity.\n\n4. **Luxury, Power & Energy (If Applicable)**  \n   - If the original character prompt suggests **luxury**, reflect that in opulent architecture, gilded decor, or futuristic extravagance (e.g., glowing marble floors, golden skyscrapers).  \n   - If the theme is **power, danger, or mysticism**, amplify the intensity (e.g., swirling storm clouds, flickering magical runes, chaotic battlefields, ominous skies).\n\n5. **Dramatic Depth & Perspective**  \n   - Maintain **strong leading lines, layered compositions, and controlled depth of field** to guide the viewer’s attention through the scene.  \n   - The environment should feel **expansive, cinematic, and immersive**, suggesting action and movement beyond the frame.\n\n---\n\n### **Input Example (Character-Centric Prompt)**\n\n```json\n{\n  \"prompt\": \"Ultra-realistic 8K full-body image of a legendary samurai in futuristic Tokyo at midnight. In hyper fidelity, his highly exaggerated black and red armor and detailed katana scream traditional Japanese style. Standing confidently in the rain, he points his reflective blade toward the camera while neon billboards and holographic ads create a vibrant, stereotype-driven cyberpunk backdrop.\"\n}\n```\n\n---\n\n### **Generated Environment Prompt Example (Theme-Agnostic Format)**\n\n```json\n{\n  \"prompt\": \"Ultra-realistic 8K cinematic view of a sprawling cyberpunk metropolis at midnight, drenched in neon rain. Towering skyscrapers with holographic billboards and pulsing neon signs dominate the skyline, reflecting off puddles in the streets below. Monorails glide overhead, trailing beams of electric light, while futuristic vehicles hover near glowing intersections. Traditional architectural elements—like curved rooftops and lantern-lit balconies—blend seamlessly with high-tech glass and steel, hinting at an ancient heritage meeting a neon-drenched future. Wisps of steam rise from street-level vents, adding atmosphere to the rain-soaked alleys. Every detail—from the flicker of a distant billboard to the shimmer on rain-slick metal—should be rendered in hyper fidelity, immersing viewers in this vibrant, stereotype-driven cyberpunk world.\"\n}\n```\n",
+                            "role": "system"
+                        },
+                        {
+                            "content": "=Image Prompt: {{ $json.data.input.prompt }}"
+                        }
+                    ]
+                },
+                "jsonOutput": true,
+                "options": {
+                    "temperature": 1
+                }
+            },
+            "type": "@n8n/n8n-nodes-langchain.openAi",
+            "typeVersion": 1.8,
+            "position": [
+                2820,
+                -140
+            ],
+            "id": "d3051d0f-2358-4a2f-908a-c026c0f09056",
+            "name": "Cenario Prompt Generator",
+            "credentials": {
+                "openAiApi": {
+                    "id": "cDISyTAOzA6TQdGi",
+                    "name": "OpenAi personal"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "rules": {
+                    "values": [
+                        {
+                            "conditions": {
+                                "options": {
+                                    "caseSensitive": true,
+                                    "leftValue": "",
+                                    "typeValidation": "strict",
+                                    "version": 2
+                                },
+                                "conditions": [
+                                    {
+                                        "leftValue": "theme",
+                                        "rightValue": "",
+                                        "operator": {
+                                            "type": "string",
+                                            "operation": "exists",
+                                            "singleValue": true
+                                        },
+                                        "id": "e3d78ab6-3a24-4577-9cf8-190e19d95042"
+                                    }
+                                ],
+                                "combinator": "and"
+                            }
+                        },
+                        {
+                            "conditions": {
+                                "options": {
+                                    "caseSensitive": true,
+                                    "leftValue": "",
+                                    "typeValidation": "strict",
+                                    "version": 2
+                                },
+                                "conditions": [
+                                    {
+                                        "id": "ece3fd2f-610c-4040-8446-df55e7974523",
+                                        "leftValue": "={{ $json.subject }}",
+                                        "rightValue": "",
+                                        "operator": {
+                                            "type": "string",
+                                            "operation": "exists",
+                                            "singleValue": true
+                                        }
+                                    }
+                                ],
+                                "combinator": "and"
+                            }
+                        }
+                    ]
+                },
+                "options": {
+                    "allMatchingOutputs": true
+                }
+            },
+            "type": "n8n-nodes-base.switch",
+            "typeVersion": 3.2,
+            "position": [
+                -80,
+                -140
+            ],
+            "id": "0fd84ede-6c15-4449-8cdf-7a0174eceb21",
+            "name": "Switch"
+        },
+        {
+            "parameters": {
+                "modelId": {
+                    "__rl": true,
+                    "value": "gpt-3.5-turbo",
+                    "mode": "list",
+                    "cachedResultName": "GPT-3.5-TURBO"
+                },
+                "messages": {
+                    "values": [
+                        {
+                            "content": "=### **System Prompt:**  \n\nYou are an advanced assistant specializing in creating highly detailed descriptions of any given subject. Your goal is to vividly describe the subject’s most recognizable characteristics, cultural elements, and iconic features, ensuring a strong emphasis on **colors, materials, and lighting** to capture its full essence.  \n\n### **Instructions:**  \n\n1. **Identify the Subject:**  \n   - If the subject is a **country**, describe its landscape, architecture, national symbols, traditional clothing, cuisine, art, and defining elements.  \n   - If the subject is a **famous person**, focus on physical traits, signature outfits, typical expressions, gestures, and iconic accessories.  \n   - If the subject is a **fictional character**, describe their appearance, costumes, predominant colors, visual trademarks, and expressive features.  \n   - If the subject is a **god or mythological figure**, mention divine attributes, traditional attire, posture, sacred symbols, and the environment that typically surrounds them.  \n   - If the subject is an **object or concept**, detail its shape, texture, materials, colors, and contextual elements.  \n\n2. **Mandatory Elements:**  \n   - **Colors:** Describe dominant and accent colors that define the subject.  \n   - **Materials:** Specify the composition of clothing, objects, environments, or structures (e.g., metal, wood, silk, stone).  \n   - **Lighting:** Explain the mood and atmosphere created by light sources (e.g., soft morning glow, dramatic neon reflections, flickering candlelight).  \n   - **Emotional Impact:** Capture what the subject conveys—power, elegance, nostalgia, mystery, grandeur, warmth, etc.  \n\n---\n\n### **Examples:**  \n\n#### **Country**  \n**Input:**  \n```json\n[\n  {\n    \"subject\": \"Egypt\"\n  }\n]\n```  \n**Generated Output:**  \n\"A land of golden sands and ancient wonders, Egypt glows under the harsh yet awe-inspiring sunlight that casts long shadows across towering pyramids of smooth limestone. The Nile River, a deep blue ribbon of life, winds through vast desert expanses, its shimmering waters reflecting the golden hues of the setting sun. Palm trees with emerald-green leaves sway gently, contrasting against the earthen tones of mudbrick villages. The ancient temples, carved from colossal sandstone blocks, display intricate hieroglyphs illuminated by the flickering light of oil lamps. Ornate golden jewelry and flowing white linen robes catch the light, embodying the elegance and mysticism of a civilization that defied time.\"  \n\n---\n\n#### **Famous Person**  \n**Input:**  \n```json\n[\n  {\n    \"subject\": \"Marilyn Monroe\"\n  }\n]\n```  \n**Generated Output:**  \n\"Bathed in the soft, golden glow of old Hollywood spotlights, Marilyn Monroe radiates timeless glamour. Her platinum blonde curls shimmer like liquid silk, framing a face of flawless porcelain skin. Scarlet-red lips form a playful yet sultry smile, contrasting with the soft ivory of her signature flowing dress. The fabric, a weightless satin, ripples as it catches the light, reflecting warm highlights and deep shadows. The sparkle of diamond earrings dances with each movement, adding to the aura of refined extravagance. The background is dark and velvety, making her luminous presence the focal point, exuding both mystery and irresistible charm.\"  \n\n---\n\n#### **Fictional Character**  \n**Input:**  \n```json\n[\n  {\n    \"subject\": \"Spider-Man\"\n  }\n]\n```  \n**Generated Output:**  \n\"Perched high above the glowing cityscape, Spider-Man’s vibrant red and deep blue suit clings tightly to his athletic frame, the textured webbing pattern catching the neon reflections of passing traffic. The glossy white eyes of his mask gleam with sharp intensity, mirroring the cool, bluish glow of the skyscrapers around him. His fingers, covered in flexible yet durable fabric, grip the steel edge of a rooftop, his stance poised and dynamic. Below, the streets flicker with the warm orange of streetlights and the rhythmic pulse of blinking billboards, while distant police sirens cut through the humid night air. Every fiber of his being pulses with agility and tension, ready to leap into action.\"  \n\n---\n\n#### **God or Mythological Figure**  \n**Input:**  \n```json\n[\n  {\n    \"subject\": \"Poseidon\"\n  }\n]\n```  \n**Generated Output:**  \n\"Emerging from a raging ocean storm, Poseidon stands as an unstoppable force of nature. His chiseled, bronze-toned body glistens with seawater, illuminated by the flashes of lightning that streak across the stormy gray sky. His flowing beard and long, wind-swept hair, both a deep silver-blue, ripple like crashing waves. Clutched in his calloused hand, a golden trident gleams with an ethereal glow, its sharp prongs crackling with the power of the seas. Around him, the dark waters churn violently, their frothing whitecaps glowing under the eerie greenish-blue light of the bioluminescent depths. His deep-set eyes, the color of the abyss, pierce through the mist, embodying the relentless and commanding essence of the ocean itself.\"  \n\n---\n\n#### **Object or Concept**  \n**Input:**  \n```json\n[\n  {\n    \"subject\": \"A Medieval Sword\"\n  }\n]\n```  \n**Generated Output:**  \n\"Resting upon a weathered stone pedestal, the medieval sword glows faintly under the cool silver light of the full moon. Its long blade, a masterpiece of polished steel, bears faint battle scars, whispering of forgotten wars and ancient legends. The crossguard, wrought from aged bronze, is adorned with intricate engravings, catching the flickering torchlight in subtle golden highlights. The grip, wrapped in dark, timeworn leather, still holds the imprint of the warriors who once wielded it. The pommel, a heavy iron sphere, adds weight and balance, a silent testament to its formidable presence. Shadows dance across its surface, evoking a sense of mystery, power, and destiny waiting to be fulfilled.\"  \n\n\n",
+                            "role": "system"
+                        },
+                        {
+                            "content": "=[\n  {\n    \"subject\": \"{{ $json.subject }}\"\n  }\n]"
+                        }
+                    ]
+                },
+                "options": {
+                    "temperature": 0.7
+                }
+            },
+            "type": "@n8n/n8n-nodes-langchain.openAi",
+            "typeVersion": 1.8,
+            "position": [
+                140,
+                -240
+            ],
+            "id": "04a53148-e5be-43eb-9f22-1c13e532d1df",
+            "name": "Detail Subject",
+            "credentials": {
+                "openAiApi": {
+                    "id": "cDISyTAOzA6TQdGi",
+                    "name": "OpenAi personal"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "modelId": {
+                    "__rl": true,
+                    "value": "gpt-3.5-turbo",
+                    "mode": "list",
+                    "cachedResultName": "GPT-3.5-TURBO"
+                },
+                "messages": {
+                    "values": [
+                        {
+                            "content": "=### **System Prompt:**  \n\nYou are an advanced assistant specializing in creating highly detailed descriptions of artistic and conceptual **themes**. Your goal is to vividly illustrate the **visual style, atmosphere, lighting, and material details** of a given theme while keeping the description broad and adaptable. You should avoid mentioning specific subjects or characters—only describe the overall essence of the theme.  \n\n### **Instructions:**  \n\n1. **Identify the Theme Type:**  \n   - If the theme relates to a **time period or aesthetic style**, describe the key visual elements, colors, textures, and overall atmosphere.  \n   - If the theme refers to a **genre (e.g., cyberpunk, gothic horror, steampunk)**, focus on worldbuilding details, architecture, technology, and lighting.  \n   - If the theme involves **a concept or mood (e.g., dystopia, celestial realms, neon fantasy)**, emphasize the emotions it evokes and the way its elements interact visually.  \n\n2. **Mandatory Elements:**  \n   - **Visual Style & Aesthetic:** Define the artistic direction (e.g., industrial, surreal, baroque, organic).  \n   - **Lighting & Atmosphere:** Describe how light interacts with the scene—its sources, intensity, colors, and effects on the environment.  \n   - **Materials & Textures:** Identify the predominant materials (e.g., rusted iron, polished stone, bioluminescent flora, flowing silk).  \n   - **Environmental Details:** Explain the setting’s physical aspects, weather effects, air quality, and sensory elements.  \n\n---\n\n### **Examples:**  \n\n#### **Theme: Steampunk Realm**  \n**Input:**  \n```json\n[\n  {\n    \"theme\": \"Steampunk Realm\"\n  }\n]\n```  \n**Generated Output:**  \n\"A world built upon the fusion of Victorian elegance and industrial machinery, where towering brass structures gleam under the warm glow of gas lanterns. The air is thick with the scent of oil and steam, as elaborate clockwork mechanisms tick rhythmically within intricate iron frameworks. Gears the size of buildings turn slowly in the distance, their polished copper surfaces reflecting streaks of golden sunlight breaking through the smog-filled sky. Streets paved with wrought iron and cobblestone shimmer under the soft orange hue of flickering street lamps. Billowing steam vents cast shifting shadows on velvet-draped interiors, where the glint of polished mahogany furniture and golden pocket watches contrast against the ever-present mechanical hum of an era driven by ingenuity and artifice.\"  \n\n---\n\n#### **Theme: Zodiac Signs as Prisoners**  \n**Input:**  \n```json\n[\n  {\n    \"theme\": \"Zodiac Signs as Prisoners\"\n  }\n]\n```  \n**Generated Output:**  \n\"A cosmic prison where celestial beings are bound within shimmering ethereal chains, their energy pulsating against the dim glow of arcane sigils carved into obsidian walls. The air is thick with an eerie, silvery mist that drifts like slow-moving stars through the chamber. Towering spires of crystalline stone pierce the endless void above, refracting beams of cold blue light across the vast prison halls. The ground, a polished mirror-like surface, reflects distorted silhouettes of the celestial captives, as faint echoes of their whispered prophecies ripple through the atmosphere. The weight of ancient power presses against the walls, each carved with astrological symbols that pulse rhythmically, as though alive, waiting for the inevitable moment of escape.\"  \n\n---\n\n#### **Theme: Mythical Beasts Unleashed**  \n**Input:**  \n```json\n[\n  {\n    \"theme\": \"Mythical Beasts Unleashed\"\n  }\n]\n```  \n**Generated Output:**  \n\"A landscape torn apart by the raw power of ancient creatures, where the sky swirls in a maelstrom of violet and gold, illuminated by streaks of divine lightning. Jagged peaks of blackened stone rise from the earth, their surfaces carved with glowing runes that pulse like a heartbeat. The air crackles with magical energy, distorting reality itself as primal forces awaken from their slumber. The scent of scorched earth and ozone fills the atmosphere, while rivers of molten fire carve through dense, mist-covered jungles of towering crystalline trees. In the distance, massive claw marks scar the land, evidence of the legendary titans that roam freely once more, their silhouettes briefly visible against the ever-changing celestial backdrop.\"  \n\n---\n\n#### **Theme: Cyberpunk Metropolis**  \n**Input:**  \n```json\n[\n  {\n    \"theme\": \"Cyberpunk Metropolis\"\n  }\n]\n```  \n**Generated Output:**  \n\"A neon-drenched megacity where endless skyscrapers stretch toward a smog-filled sky, their facades covered in pulsating holographic billboards. The streets below are bathed in an electric glow, reflecting streaks of pink, cyan, and deep violet across rain-slicked pavement. Towering over the labyrinth of alleys, colossal mechanical structures loom, their chrome surfaces glinting under the ever-present hum of flickering LED panels. The air is heavy with humidity and the faint scent of burnt circuitry, while automated drones buzz overhead, scanning the crowds of cyber-enhanced citizens. Electric rain drizzles from the sky, the droplets shimmering like liquid mercury before vanishing into the endless sprawl of synthetic life and digital illusions.\"  \n\n---\n\n#### **Theme: Gothic Horror**  \n**Input:**  \n```json\n[\n  {\n    \"theme\": \"Gothic Horror\"\n  }\n]\n```  \n**Generated Output:**  \n\"A world of perpetual twilight, where towering cathedrals of blackened stone loom over fog-drenched graveyards. The dim glow of candlelight flickers against stained glass windows, casting eerie crimson and indigo reflections upon the damp stone floors. The scent of aged parchment and melted wax lingers in the air, mixing with the distant, almost imperceptible sound of a pipe organ playing a sorrowful requiem. Heavy iron gates, rusted yet resilient, creak under the weight of time, guarding shadowed corridors lined with oil paintings whose figures seem to shift when no one is watching. The wind howls through the empty halls, carrying whispers of forgotten tragedies and secrets buried beneath the cold, unfeeling stone of a world lost to the embrace of darkness.\"  \n\n",
+                            "role": "system"
+                        },
+                        {
+                            "content": "=[\n  {\n    \"theme\": \"{{ $json.theme }}\"\n  }\n]"
+                        }
+                    ]
+                },
+                "options": {
+                    "temperature": 0.7
+                }
+            },
+            "type": "@n8n/n8n-nodes-langchain.openAi",
+            "typeVersion": 1.8,
+            "position": [
+                140,
+                -40
+            ],
+            "id": "ef6ed2d4-acce-46d1-a7d6-6e1bc4ec9437",
+            "name": "Detail Theme",
+            "credentials": {
+                "openAiApi": {
+                    "id": "cDISyTAOzA6TQdGi",
+                    "name": "OpenAi personal"
+                }
+            }
+        },
+        {
+            "parameters": {},
+            "type": "n8n-nodes-base.merge",
+            "typeVersion": 3,
+            "position": [
+                516,
+                -140
+            ],
+            "id": "38762355-7dc1-401e-9fc6-0ef142c2291d",
+            "name": "Merge"
+        },
+        {
+            "parameters": {
+                "modelId": {
+                    "__rl": true,
+                    "value": "gpt-3.5-turbo",
+                    "mode": "list",
+                    "cachedResultName": "GPT-3.5-TURBO"
+                },
+                "messages": {
+                    "values": [
+                        {
+                            "content": "=You are an advanced AI tasked with **combining a theme and a subject** to create a visually detailed, immersive description. The **theme** will shape the overall aesthetic, atmosphere, lighting, and materials, while the **subject** provides the core identity, characteristics, and visual elements to be adapted within the theme.\n\nThe system will receive **both the theme and subject details** in the form of a JSON input. Your task is to **merge** the given theme and subject into a single cohesive description, ensuring the **subject’s features are represented in line with the theme’s atmosphere, style, and cultural elements**.\n\n### **Input Structure:**\n```json\n[\n  {\n    \"theme\": \"[theme name]\",\n    \"theme_details\": \"[details here]\",\n    \"subject\": \"[subject name]\",\n    \"subject_details\": \"[details here]\"\n  }\n]\n```\n\n### **Instructions:**\n\n1. **Theme and Subject Fusion:**  \n   - Use the **subject’s characteristics** (e.g., appearance, cultural elements, visual features) as the primary focus of the description.  \n   - Adapt these characteristics within the framework of the **theme**, ensuring that the subject feels naturally placed within the theme’s context.  \n\n2. **Description Focus:**  \n   - **Appearance & Attire:** Describe the subject’s key physical features and attire, modified to reflect the **theme’s visual style** and **cultural influences**.  \n   - **Colors & Materials:** The color palette and materials should blend the **subject’s identity** with the **aesthetic of the theme**. Use the subject’s details (like national or cultural elements) and adapt them to the theme’s color scheme and textures.  \n   - **Lighting & Atmosphere:** Describe how **lighting interacts** with the subject based on the theme’s atmosphere. Whether it’s celestial, industrial, or natural, the light should enhance the subject’s presence within the theme.  \n   - **Environmental Context:** Place the subject within the **environment influenced by the theme**, ensuring the surroundings harmonize with the subject’s identity.\n\n3. **Restrictions:**  \n   - Ensure that the **subject’s defining characteristics** remain at the core of the description.  \n   - Ensure the **fusion** between subject and theme feels **cohesive and natural**, with the subject easily integrated into the theme without appearing out of place.  \n\n---\n\n### **Examples:**\n\n#### **Example 1: Theme – Zeus as a Colossus | Subject – Greece**  \n**Input:**  \n```json\n[\n  {\n    \"theme\": \"Zeus as a Colossus\",\n    \"theme_details\": \"A grand and awe-inspiring theme where the god Zeus manifests as a towering colossus of power, each incarnation reflecting the distinctive cultural nuances of various nationalities. These colossal beings, towering like mountains, exude an aura of omnipotence and authority, their forms adorned with classic mythological accessories that are intricately fused with the essence of their informed nationality.\\n\\nVisual Style & Aesthetic: The artistic direction embodies a fusion of classical mythological grandeur and the unique cultural aesthetics of diverse nationalities, creating a mesmerizing blend of ancient lore and contemporary influences.\\n\\nLighting & Atmosphere: Radiant beams of otherworldly light cascade over the colossal figures, illuminating them in a divine glow that dances across their colossal forms. The atmosphere crackles with an electric energy, as if the very air around these towering beings hums with power and reverence.\\n\\nMaterials & Textures: The predominant materials range from ethereal shimmering fabrics reminiscent of celestial realms to ornate armor and regalia intricately designed to reflect the heritage of each nationality. Elements like jade, silk, gold, and obsidian intertwine, creating a tapestry of textures that evoke both the divine and the earthly.\\n\\nEnvironmental Details: Surroundings shift to accommodate the presence of these colossal beings, with landscapes transforming to mirror the mythology and geography of the informed nationalities. Whether it's ornate palaces reflecting intricate Islamic architecture or rugged cliffs echoing Nordic fjords, the environments serve as a harmonious backdrop to the majestic presence of these immense figures. Atmospheric effects such as swirling mists, vibrant flora, and celestial phenomena enhance the mythical ambiance, enveloping the colossal beings in a world where legend and reality intertwine.\",\n    \"subject\": \"Greece\",\n    \"subject_details\": \"Nestled under the Mediterranean sun, Greece shimmers with a palette of vibrant colors and materials that reflect its rich history and cultural heritage. Dominated by the brilliant contrast of azure seas against whitewashed buildings, Greece is a visual feast of elegance and timelessness. **Colors:** The dominant colors of Greece are the radiant blues of the Aegean Sea and the crisp whites of its iconic architecture. The sea sparkles with varying shades of turquoise and deep sapphire, mirroring the clear skies above. The buildings, with their smooth stucco walls and cobblestone streets, gleam in pure white under the relentless sun, creating a striking visual harmony. **Materials:** The traditional clothing in Greece is often crafted from light and breathable fabrics such as cotton and linen, ideal for the warm climate. The architecture features a mix of marble, limestone, and terracotta tiles, embodying durability and timelessness. Olive wood, used for intricate carvings and furniture, adds a warm and natural element to the landscape. **Lighting:** The golden Grecian sunlight bathes the land in a warm, inviting glow, casting long shadows that dance across ancient ruins and olive groves. In the evenings, the fading light paints the sky in shades of pink and orange, setting the sea ablaze with reflections. Soft candlelight flickers in tavernas and cafes, creating a cozy and intimate atmosphere for lively conversations and traditional music. **Emotional Impact:** Greece evokes a sense of timeless beauty, elegance, and a deep connection to history and mythology. The country exudes a mix of tranquility and passion, from the peaceful island sunsets to the lively dances of traditional festivals. It embodies the essence of the Mediterranean lifestyle—relaxed, vibrant, and steeped in a rich tapestry of ancient stories and cultural traditions.\"\n  }\n]\n```\n\n**Generated Output:**  \n\"Emerging from the azure sea under the golden Grecian sun, Zeus manifests as a towering figure, his massive form reaching towards the sky like a living mountain. His colossal presence is a harmonious blend of mythological grandeur and the vibrant essence of Greece itself. Draped in a robe of flowing linen and shimmering gold, the material catches the sunlight in a divine glow, reflecting hues of turquoise and deep sapphire that mirror the Aegean Sea. A golden laurel wreath crowns his head, the leaves etched with intricate designs inspired by ancient Greek patterns, while his armor—adorned with olive wood accents—reflects the rich Mediterranean heritage. His mighty form stands against a backdrop of pristine whitewashed buildings and terracotta tiles, towering over the landscape like a living embodiment of Greece’s timeless elegance and power. The golden light from above casts long shadows over the land, bathing Zeus in an ethereal glow that crackles with the divine energy of the gods. In the distance, ancient ruins stand as silent witnesses to his grandeur, while the scent of the sea and fresh olive groves fills the air. This is a Zeus who is both divine and deeply connected to the very land that birthed the myths—immense, powerful, and beautifully Greek.\"  \n\n",
+                            "role": "system"
+                        },
+                        {
+                            "content": "=[\n  {\n    \"theme\": \"{{ $('When Executed by Another Workflow').item.json.theme }}\",\n    \"theme_detail\": \"{{ $json.theme_description }}\",\n    \"subject\": \"{{ $('When Executed by Another Workflow').item.json.subject }}\",\n    \"subject_detail\": \"{{ $json.subject_description }}\"\n  }\n]"
+                        }
+                    ]
+                },
+                "options": {
+                    "temperature": 0.7
+                }
+            },
+            "type": "@n8n/n8n-nodes-langchain.openAi",
+            "typeVersion": 1.8,
+            "position": [
+                1176,
+                -140
+            ],
+            "id": "5fa9840a-7ea3-4681-ac61-74098cbf61db",
+            "name": "Combine theme and subject",
+            "credentials": {
+                "openAiApi": {
+                    "id": "cDISyTAOzA6TQdGi",
+                    "name": "OpenAi personal"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "assignments": {
+                    "assignments": [
+                        {
+                            "id": "27863116-9376-41df-83c9-c8f51a354143",
+                            "name": "subject_description",
+                            "value": "={{ $json.prompts[0].message.content }}",
+                            "type": "string"
+                        },
+                        {
+                            "id": "395a4077-8859-4aa2-989d-4a6fbff7e511",
+                            "name": "theme_description",
+                            "value": "={{ $json.prompts[1].message.content }}",
+                            "type": "string"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.set",
+            "typeVersion": 3.4,
+            "position": [
+                956,
+                -140
+            ],
+            "id": "d0f92b1d-9aa5-49ff-b29c-c691b0fc8afc",
+            "name": "prepare prompts"
+        },
+        {
+            "parameters": {
+                "aggregate": "aggregateAllItemData",
+                "destinationFieldName": "prompts",
+                "include": "specifiedFields",
+                "fieldsToInclude": "=message",
+                "options": {}
+            },
+            "type": "n8n-nodes-base.aggregate",
+            "typeVersion": 1,
+            "position": [
+                736,
+                -140
+            ],
+            "id": "79ad104f-ff7e-41b6-9a80-71e07ae4f3c3",
+            "name": "Aggregate"
+        },
+        {
+            "parameters": {
+                "modelId": {
+                    "__rl": true,
+                    "value": "gpt-3.5-turbo",
+                    "mode": "list",
+                    "cachedResultName": "GPT-3.5-TURBO"
+                },
+                "messages": {
+                    "values": [
+                        {
+                            "content": "=Generate an image prompt that create an ultra-detailed, cinematic description for an AI image generation tool (such as MidJourney). The resulting description should emphasize visual appeal, lighting, color schemes, textures, and atmosphere, ensuring that the output is visually stunning, eye-catching, and suitable for platforms like TikTok.\n\n---\n\n### Input: \nYou will receive a text describing a scene and you must adapt it to a prompt for ai generation.\n\n### **Instructions for the AI:**\n\n1. **Fusion of Theme and Subject:**  \n   - Combine the **subject’s features** with the **visual style** of the theme. Adapt the subject to reflect the atmosphere and visual aesthetics of the theme, ensuring that the subject remains the core focus while being seamlessly integrated into the theme.\n   \n2. **Visual Style & Aesthetic:**  \n   - Focus on the **primary colors, lighting, and materials** that should dominate the scene. Consider **natural elements** (e.g., landscapes, textures) as well as **artificial elements** (e.g., buildings, technology) that fit the theme.\n   - Specify **lighting** that enhances the subject's power and presence in the scene (e.g., \"divine light,\" \"glowing neon,\" \"sunset lighting\").\n   - Use **rich visual contrasts** to make the image dynamic and captivating.\n\n3. **Textures & Materials:**  \n   - Include descriptions of **materials and textures** (e.g., \"shimmering gold robes,\" \"ancient stone ruins,\" \"icy textures,\" \"high-tech chrome surfaces\").\n   \n4. **Size and Scale:**  \n   - Ensure that the **scale of the subject** is described (e.g., \"towering colossus,\" \"small, intricate details,\" \"vast landscape\").\n   \n5. **Cinematic Impact:**  \n   - The final prompt should have **cinematic qualities**: visual drama, dynamic composition, and an emphasis on making the scene feel larger-than-life and ready for a video format (TikTok-friendly).\n\n6. **Ultra-High Definition (8K):**  \n   - Emphasize **ultra-high-definition details** in textures, lighting, and visual elements to ensure that the output is visually stunning in 8K quality, suitable for use on high-definition platforms.\n\n---\n\n### **Example of a Generated Output Prompt:**\n\n\"Zeus, a colossal figure, towers over the landscape, rising from the sparkling azure waters of the Aegean Sea. His massive form glows with divine light, as his flowing linen robes shimmer with gold, reflecting the deep turquoise and sapphire hues of the sea below. A laurel wreath, intricately etched with ancient Greek patterns, crowns his head, and olive wood accents embellish his armor. The scene is bathed in golden sunlight, casting long shadows over ancient Greek ruins and whitewashed buildings. Surrounding him, vibrant olive groves and terracotta tiles blend seamlessly into the majestic landscape. The air hums with divine energy as swirling mists and celestial phenomena enhance the mythical ambiance. The image is ultra-realistic, with hyper-detailed textures, cinematic lighting, and high-contrast colors that create a striking and dynamic scene, ready for a captivating TikTok video in 8K quality.\"\n\n\n### **Output Format:**\nraw text prompt generated\nno line breaks, no markdown\nit must be at most 500 chars long\n",
+                            "role": "system"
+                        },
+                        {
+                            "content": "={{ $json.message.content }}"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "type": "@n8n/n8n-nodes-langchain.openAi",
+            "typeVersion": 1.8,
+            "position": [
+                1560,
+                -140
+            ],
+            "id": "d3e60ee7-d778-4441-bfe2-5527046c5c25",
+            "name": "Create image prompt",
+            "credentials": {
+                "openAiApi": {
+                    "id": "cDISyTAOzA6TQdGi",
+                    "name": "OpenAi personal"
+                }
+            }
+        }
+    ],
+    "connections": {
+        "imagine": {
+            "main": [
+                [
+                    {
+                        "node": "Wait 15 seconds",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "upscale": {
+            "main": [
+                [
+                    {
+                        "node": "Wait 15 seconds1",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Wait 15 seconds": {
+            "main": [
+                [
+                    {
+                        "node": "Get Images link flux",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Wait 15 seconds1": {
+            "main": [
+                [
+                    {
+                        "node": "get flux upscaled ",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Get Images link flux": {
+            "main": [
+                [
+                    {
+                        "node": "repeat until done",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "get flux upscaled ": {
+            "main": [
+                [
+                    {
+                        "node": "repeat until done1",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "repeat until done": {
+            "main": [
+                [],
+                [
+                    {
+                        "node": "Cenario Prompt Generator",
+                        "type": "main",
+                        "index": 0
+                    }
+                ],
+                [
+                    {
+                        "node": "Wait 15 seconds",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "repeat until done1": {
+            "main": [
+                [],
+                [
+                    {
+                        "node": "Set Response",
+                        "type": "main",
+                        "index": 0
+                    }
+                ],
+                [
+                    {
+                        "node": "Wait 15 seconds1",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "When Executed by Another Workflow": {
+            "main": [
+                [
+                    {
+                        "node": "Switch",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Cenario Prompt Generator": {
+            "main": [
+                [
+                    {
+                        "node": "upscale",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Switch": {
+            "main": [
+                [
+                    {
+                        "node": "Detail Subject",
+                        "type": "main",
+                        "index": 0
+                    }
+                ],
+                [
+                    {
+                        "node": "Detail Theme",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Detail Subject": {
+            "main": [
+                [
+                    {
+                        "node": "Merge",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Detail Theme": {
+            "main": [
+                [
+                    {
+                        "node": "Merge",
+                        "type": "main",
+                        "index": 1
+                    }
+                ]
+            ]
+        },
+        "Merge": {
+            "main": [
+                [
+                    {
+                        "node": "Aggregate",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Combine theme and subject": {
+            "main": [
+                [
+                    {
+                        "node": "Create image prompt",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "prepare prompts": {
+            "main": [
+                [
+                    {
+                        "node": "Combine theme and subject",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Aggregate": {
+            "main": [
+                [
+                    {
+                        "node": "prepare prompts",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Create image prompt": {
+            "main": [
+                [
+                    {
+                        "node": "imagine",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        }
+    },
+    "pinData": {},
+    "meta": {
+        "templateCredsSetupCompleted": true,
+        "instanceId": "9db6f740ec3407d10a945791c96c1908b9d7d99dc400ea95c24f023a760802c3"
+    }
+}

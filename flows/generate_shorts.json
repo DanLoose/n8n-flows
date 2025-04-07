@@ -1,0 +1,3971 @@
+{
+    "nodes": [
+        {
+            "parameters": {},
+            "type": "n8n-nodes-base.manualTrigger",
+            "typeVersion": 1,
+            "position": [
+                -7720,
+                540
+            ],
+            "id": "df3267f0-3865-4944-baba-8c55e8bdd737",
+            "name": "When clicking ‘Test workflow’"
+        },
+        {
+            "parameters": {
+                "method": "POST",
+                "url": "https://api.creatomate.com/v1/renders",
+                "sendHeaders": true,
+                "headerParameters": {
+                    "parameters": [
+                        {
+                            "name": "Authorization",
+                            "value": "Bearer ###"
+                        }
+                    ]
+                },
+                "sendBody": true,
+                "specifyBody": "json",
+                "jsonBody": "={\n  \"template_id\": \"59f5e53f-4412-4bb2-bbd4-314ceb586352\",\n  \"output_format\": \"mp4\",\n  \"frame_rate\": 60,\n  \"render_scale\": 1,\n  \"max_width\": 1080,\n  \"max_height\": 1920,\n  \"modifications\": {\n    \"width\": 1080,\n    \"height\": 1920,\n    \"Title.text\": \"🌳 Mystic Forest Guardians 🐅\",\n    \"introduction-video.source\": \"{{ $json.video2 }}\",\n    \"text-subejct1.text\": \"The Bear\",\n    \"video-subject1.source\": \"{{ $json.video1 }}\",\n    \"text-subject2.text\": \"The Lion\",\n    \"video-subject2.source\": \"{{ $json.video2 }}\",\n    \"text-subject3.text\": \"The Tiger\",\n    \"video-subject3.source\": \"{{ $json.video3 }}\",\n    \"text-subject4.text\": \"The Rhino\",\n    \"video-subject4.source\": \"{{ $json.video4 }}\",\n    \"text-subject5.text\": \"The Elephant\",\n    \"video-subject5.source\": \"{{ $json.video5 }}\",\n    \"text-subject6.text\": \"The Gorilla\",\n    \"video-subject6.source\": \"{{ $json.video6 }}\"\n  }\n}",
+                "options": {}
+            },
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 4.2,
+            "position": [
+                -3820,
+                880
+            ],
+            "id": "5d4f45fc-d5c1-4918-9c28-a8f618e9b5fe",
+            "name": "Render Video"
+        },
+        {
+            "parameters": {
+                "amount": 25
+            },
+            "type": "n8n-nodes-base.wait",
+            "typeVersion": 1.1,
+            "position": [
+                -3600,
+                880
+            ],
+            "id": "302a9035-7e15-4646-a062-b6cf137a7b32",
+            "name": "25 Seconds",
+            "webhookId": "d5cd29e8-d3f7-491c-a6b6-2d705aa47931"
+        },
+        {
+            "parameters": {
+                "url": "={{ $json.url }}",
+                "options": {}
+            },
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 4.2,
+            "position": [
+                -3380,
+                880
+            ],
+            "id": "f8da8e4a-8fbf-40be-ab89-ba7dd12dbf5d",
+            "name": "Download Video"
+        },
+        {
+            "parameters": {
+                "resource": "video",
+                "operation": "upload",
+                "title": "={{ $('set info for rendering').item.json.title }}",
+                "regionCode": "US",
+                "categoryId": "1",
+                "options": {
+                    "description": "={{ $('set info for rendering').item.json.description }}",
+                    "privacyStatus": "public"
+                }
+            },
+            "type": "n8n-nodes-base.youTube",
+            "typeVersion": 1,
+            "position": [
+                -3160,
+                880
+            ],
+            "id": "2cb37dd3-8299-4364-b3c3-b34904da49be",
+            "name": "Upload Video",
+            "credentials": {
+                "youTubeOAuth2Api": {
+                    "id": "y28KPHg0bOZsSfYl",
+                    "name": "punk visionary ai acc"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "rule": {
+                    "interval": [
+                        {
+                            "field": "minutes"
+                        }
+                    ]
+                }
+            },
+            "type": "n8n-nodes-base.scheduleTrigger",
+            "typeVersion": 1.2,
+            "position": [
+                -7720,
+                720
+            ],
+            "id": "dea0a1c6-e65c-4c62-9691-cc20b4525085",
+            "name": "Schedule Trigger"
+        },
+        {
+            "parameters": {
+                "content": "## Render & Upload\n",
+                "height": 280,
+                "width": 1220
+            },
+            "type": "n8n-nodes-base.stickyNote",
+            "position": [
+                -3920,
+                800
+            ],
+            "typeVersion": 1,
+            "id": "ae698c7c-e703-42fd-8ded-81ead928c2e0",
+            "name": "Sticky Note2"
+        },
+        {
+            "parameters": {
+                "documentId": {
+                    "__rl": true,
+                    "value": "15X0xFl0Ys2rt1M0MlozQKG88nZ8_UvfbC3tEpCyBN7c",
+                    "mode": "list",
+                    "cachedResultName": "Faceless Shorts Template",
+                    "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15X0xFl0Ys2rt1M0MlozQKG88nZ8_UvfbC3tEpCyBN7c/edit?usp=drivesdk"
+                },
+                "sheetName": {
+                    "__rl": true,
+                    "value": 1098964566,
+                    "mode": "list",
+                    "cachedResultName": "heros ideas",
+                    "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15X0xFl0Ys2rt1M0MlozQKG88nZ8_UvfbC3tEpCyBN7c/edit#gid=1098964566"
+                },
+                "filtersUI": {
+                    "values": [
+                        {
+                            "lookupColumn": "videoStatus",
+                            "lookupValue": "To Do"
+                        }
+                    ]
+                },
+                "options": {
+                    "returnFirstMatch": true
+                }
+            },
+            "type": "n8n-nodes-base.googleSheets",
+            "typeVersion": 4.5,
+            "position": [
+                -7400,
+                620
+            ],
+            "id": "22cb1fdc-74e9-489d-8b60-88d344e082d1",
+            "name": "Get first todo",
+            "credentials": {
+                "googleSheetsOAuth2Api": {
+                    "id": "kDHpIeRydLPGpkRY",
+                    "name": "Google Sheets account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "operation": "update",
+                "documentId": {
+                    "__rl": true,
+                    "value": "15X0xFl0Ys2rt1M0MlozQKG88nZ8_UvfbC3tEpCyBN7c",
+                    "mode": "list",
+                    "cachedResultName": "Faceless Shorts Template",
+                    "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15X0xFl0Ys2rt1M0MlozQKG88nZ8_UvfbC3tEpCyBN7c/edit?usp=drivesdk"
+                },
+                "sheetName": {
+                    "__rl": true,
+                    "value": 1098964566,
+                    "mode": "list",
+                    "cachedResultName": "heros ideas",
+                    "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15X0xFl0Ys2rt1M0MlozQKG88nZ8_UvfbC3tEpCyBN7c/edit#gid=1098964566"
+                },
+                "columns": {
+                    "mappingMode": "defineBelow",
+                    "value": {
+                        "videoLink": "={{ $('Download Video').item.json.url }}",
+                        "publishStatus": "Processed",
+                        "row_number": "={{ $('Get first todo').first().json.row_number }}"
+                    },
+                    "matchingColumns": [
+                        "row_number"
+                    ],
+                    "schema": [
+                        {
+                            "id": "title",
+                            "displayName": "title",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "Subject",
+                            "displayName": "Subject",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "Country 1",
+                            "displayName": "Country 1",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "Country 2",
+                            "displayName": "Country 2",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "Country 3",
+                            "displayName": "Country 3",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "Country 4",
+                            "displayName": "Country 4",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "Country 5",
+                            "displayName": "Country 5",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "Country 6",
+                            "displayName": "Country 6",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "caption",
+                            "displayName": "caption",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "videoStatus",
+                            "displayName": "videoStatus",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "publishStatus",
+                            "displayName": "publishStatus",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true
+                        },
+                        {
+                            "id": "videoLink",
+                            "displayName": "videoLink",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true
+                        },
+                        {
+                            "id": "row_number",
+                            "displayName": "row_number",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "readOnly": true,
+                            "removed": false
+                        }
+                    ],
+                    "attemptToConvertTypes": false,
+                    "convertFieldsToString": false
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.googleSheets",
+            "typeVersion": 4.5,
+            "position": [
+                -2940,
+                880
+            ],
+            "id": "9936b689-d3e3-45f8-8b26-345e02378e76",
+            "name": "Update sheet",
+            "credentials": {
+                "googleSheetsOAuth2Api": {
+                    "id": "kDHpIeRydLPGpkRY",
+                    "name": "Google Sheets account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "rules": {
+                    "values": [
+                        {
+                            "conditions": {
+                                "options": {
+                                    "caseSensitive": true,
+                                    "leftValue": "",
+                                    "typeValidation": "strict",
+                                    "version": 2
+                                },
+                                "conditions": [
+                                    {
+                                        "leftValue": "={{ $json[\"Subject 1\"] }}",
+                                        "rightValue": "",
+                                        "operator": {
+                                            "type": "string",
+                                            "operation": "empty",
+                                            "singleValue": true
+                                        },
+                                        "id": "eb53c94a-5d20-41ae-bb25-0234cf70101a"
+                                    }
+                                ],
+                                "combinator": "and"
+                            },
+                            "renameOutput": true,
+                            "outputKey": "subject 1"
+                        },
+                        {
+                            "conditions": {
+                                "options": {
+                                    "caseSensitive": true,
+                                    "leftValue": "",
+                                    "typeValidation": "strict",
+                                    "version": 2
+                                },
+                                "conditions": [
+                                    {
+                                        "id": "06430b15-bb54-4afb-aa86-018590f66e27",
+                                        "leftValue": "={{ $json[\"Subject 2\"] }}",
+                                        "rightValue": "",
+                                        "operator": {
+                                            "type": "string",
+                                            "operation": "empty",
+                                            "singleValue": true
+                                        }
+                                    }
+                                ],
+                                "combinator": "and"
+                            },
+                            "renameOutput": true,
+                            "outputKey": "subject  2"
+                        },
+                        {
+                            "conditions": {
+                                "options": {
+                                    "caseSensitive": true,
+                                    "leftValue": "",
+                                    "typeValidation": "strict",
+                                    "version": 2
+                                },
+                                "conditions": [
+                                    {
+                                        "id": "7c1b280e-65a0-480e-b032-e3d515ebeee2",
+                                        "leftValue": "={{ $json[\"Subject 3\"] }}",
+                                        "rightValue": "",
+                                        "operator": {
+                                            "type": "string",
+                                            "operation": "empty",
+                                            "singleValue": true
+                                        }
+                                    }
+                                ],
+                                "combinator": "and"
+                            },
+                            "renameOutput": true,
+                            "outputKey": "subject  3"
+                        },
+                        {
+                            "conditions": {
+                                "options": {
+                                    "caseSensitive": true,
+                                    "leftValue": "",
+                                    "typeValidation": "strict",
+                                    "version": 2
+                                },
+                                "conditions": [
+                                    {
+                                        "id": "bbd012b9-903d-4b35-bbac-92edb515719c",
+                                        "leftValue": "={{ $json[\"Subject 4\"] }}",
+                                        "rightValue": "",
+                                        "operator": {
+                                            "type": "string",
+                                            "operation": "empty",
+                                            "singleValue": true
+                                        }
+                                    }
+                                ],
+                                "combinator": "and"
+                            },
+                            "renameOutput": true,
+                            "outputKey": "subject  4"
+                        },
+                        {
+                            "conditions": {
+                                "options": {
+                                    "caseSensitive": true,
+                                    "leftValue": "",
+                                    "typeValidation": "strict",
+                                    "version": 2
+                                },
+                                "conditions": [
+                                    {
+                                        "id": "da16038d-8fe8-4b48-b94a-dba332168b31",
+                                        "leftValue": "={{ $json[\"Subject 5\"] }}",
+                                        "rightValue": "",
+                                        "operator": {
+                                            "type": "string",
+                                            "operation": "empty",
+                                            "singleValue": true
+                                        }
+                                    }
+                                ],
+                                "combinator": "and"
+                            },
+                            "renameOutput": true,
+                            "outputKey": "subject  5"
+                        },
+                        {
+                            "conditions": {
+                                "options": {
+                                    "caseSensitive": true,
+                                    "leftValue": "",
+                                    "typeValidation": "strict",
+                                    "version": 2
+                                },
+                                "conditions": [
+                                    {
+                                        "id": "f9a498f4-de48-458a-88dc-4e0d217c8eb2",
+                                        "leftValue": "={{ $json[\"Subject 6\"] }}",
+                                        "rightValue": "",
+                                        "operator": {
+                                            "type": "string",
+                                            "operation": "empty",
+                                            "singleValue": true
+                                        }
+                                    }
+                                ],
+                                "combinator": "and"
+                            },
+                            "renameOutput": true,
+                            "outputKey": "subject  6"
+                        }
+                    ]
+                },
+                "options": {
+                    "fallbackOutput": "extra",
+                    "allMatchingOutputs": true
+                }
+            },
+            "type": "n8n-nodes-base.switch",
+            "typeVersion": 3.2,
+            "position": [
+                -6280,
+                560
+            ],
+            "id": "19a7273e-f413-4cd7-9bff-c1c8bd70fb24",
+            "name": "Switch5"
+        },
+        {
+            "parameters": {
+                "conditions": {
+                    "options": {
+                        "caseSensitive": true,
+                        "leftValue": "",
+                        "typeValidation": "strict",
+                        "version": 2
+                    },
+                    "conditions": [
+                        {
+                            "id": "bbe46812-fa24-469b-b8b2-af6401985993",
+                            "leftValue": "={{ $json.isEmpty() }}",
+                            "rightValue": "",
+                            "operator": {
+                                "type": "boolean",
+                                "operation": "true",
+                                "singleValue": true
+                            }
+                        }
+                    ],
+                    "combinator": "and"
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.if",
+            "typeVersion": 2.2,
+            "position": [
+                -6900,
+                617
+            ],
+            "id": "7253afb2-e45c-4c83-be5a-8f07e1496e9e",
+            "name": "If"
+        },
+        {
+            "parameters": {
+                "operation": "update",
+                "documentId": {
+                    "__rl": true,
+                    "value": "15X0xFl0Ys2rt1M0MlozQKG88nZ8_UvfbC3tEpCyBN7c",
+                    "mode": "list",
+                    "cachedResultName": "Faceless Shorts Template",
+                    "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15X0xFl0Ys2rt1M0MlozQKG88nZ8_UvfbC3tEpCyBN7c/edit?usp=drivesdk"
+                },
+                "sheetName": {
+                    "__rl": true,
+                    "value": 2080377320,
+                    "mode": "list",
+                    "cachedResultName": "video completions",
+                    "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15X0xFl0Ys2rt1M0MlozQKG88nZ8_UvfbC3tEpCyBN7c/edit#gid=2080377320"
+                },
+                "columns": {
+                    "mappingMode": "defineBelow",
+                    "value": {
+                        "row_number": "={{ $('Get first todo').item.json.row_number }}",
+                        "Theme": "={{ $('Get first todo').item.json.Theme }}"
+                    },
+                    "matchingColumns": [
+                        "row_number"
+                    ],
+                    "schema": [
+                        {
+                            "id": "Theme",
+                            "displayName": "Theme",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": false
+                        },
+                        {
+                            "id": "Subject 1",
+                            "displayName": "Subject 1",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "Subject 2",
+                            "displayName": "Subject 2",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "Subject 3",
+                            "displayName": "Subject 3",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "Subject 4",
+                            "displayName": "Subject 4",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "Subject 5",
+                            "displayName": "Subject 5",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "Subject 6",
+                            "displayName": "Subject 6",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "row_number",
+                            "displayName": "row_number",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "readOnly": true,
+                            "removed": false
+                        }
+                    ],
+                    "attemptToConvertTypes": false,
+                    "convertFieldsToString": false
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.googleSheets",
+            "typeVersion": 4.5,
+            "position": [
+                -6520,
+                380
+            ],
+            "id": "14772647-7993-4e2c-a076-29ca381235c0",
+            "name": "update subject in video completions",
+            "alwaysOutputData": true,
+            "credentials": {
+                "googleSheetsOAuth2Api": {
+                    "id": "kDHpIeRydLPGpkRY",
+                    "name": "Google Sheets account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "operation": "update",
+                "documentId": {
+                    "__rl": true,
+                    "value": "15X0xFl0Ys2rt1M0MlozQKG88nZ8_UvfbC3tEpCyBN7c",
+                    "mode": "list",
+                    "cachedResultName": "Faceless Shorts Template",
+                    "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15X0xFl0Ys2rt1M0MlozQKG88nZ8_UvfbC3tEpCyBN7c/edit?usp=drivesdk"
+                },
+                "sheetName": {
+                    "__rl": true,
+                    "value": 66809402,
+                    "mode": "list",
+                    "cachedResultName": "image completions",
+                    "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15X0xFl0Ys2rt1M0MlozQKG88nZ8_UvfbC3tEpCyBN7c/edit#gid=66809402"
+                },
+                "columns": {
+                    "mappingMode": "defineBelow",
+                    "value": {
+                        "row_number": "={{ $('Get first todo').first().json.row_number }}",
+                        "Theme": "={{ $('Get first todo').item.json.Theme }}"
+                    },
+                    "matchingColumns": [
+                        "row_number"
+                    ],
+                    "schema": [
+                        {
+                            "id": "Theme",
+                            "displayName": "Theme",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": false
+                        },
+                        {
+                            "id": "Subject 1",
+                            "displayName": "Subject 1",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "Subject 2",
+                            "displayName": "Subject 2",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "Subject 3",
+                            "displayName": "Subject 3",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "Subject 4",
+                            "displayName": "Subject 4",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "Subject 5",
+                            "displayName": "Subject 5",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "Subject 6",
+                            "displayName": "Subject 6",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "row_number",
+                            "displayName": "row_number",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "readOnly": true,
+                            "removed": false
+                        }
+                    ],
+                    "attemptToConvertTypes": false,
+                    "convertFieldsToString": false
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.googleSheets",
+            "typeVersion": 4.5,
+            "position": [
+                -6680,
+                380
+            ],
+            "id": "47d40ea8-5165-4148-bc0e-034c3fac5859",
+            "name": "update subject in video completions1",
+            "alwaysOutputData": true,
+            "credentials": {
+                "googleSheetsOAuth2Api": {
+                    "id": "kDHpIeRydLPGpkRY",
+                    "name": "Google Sheets account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "workflowId": {
+                    "__rl": true,
+                    "value": "20yB25V0FJZx7dif",
+                    "mode": "list",
+                    "cachedResultName": "Generate AI Image"
+                },
+                "workflowInputs": {
+                    "mappingMode": "defineBelow",
+                    "value": {
+                        "subject": "={{ $json.subject }}",
+                        "theme": "={{ $json.theme }}"
+                    },
+                    "matchingColumns": [],
+                    "schema": [
+                        {
+                            "id": "subject",
+                            "displayName": "subject",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "canBeUsedToMatch": true,
+                            "type": "string"
+                        },
+                        {
+                            "id": "theme",
+                            "displayName": "theme",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "canBeUsedToMatch": true,
+                            "type": "string",
+                            "removed": false
+                        }
+                    ],
+                    "attemptToConvertTypes": false,
+                    "convertFieldsToString": true
+                },
+                "options": {
+                    "waitForSubWorkflow": true
+                }
+            },
+            "type": "n8n-nodes-base.executeWorkflow",
+            "typeVersion": 1.2,
+            "position": [
+                -5700,
+                -380
+            ],
+            "id": "d9413024-ea15-4cc6-95d3-2799f25c2579",
+            "name": "Generate AI Image",
+            "onError": "continueErrorOutput"
+        },
+        {
+            "parameters": {
+                "assignments": {
+                    "assignments": [
+                        {
+                            "id": "3f7846c8-2c7f-440f-8245-71bf158ea311",
+                            "name": "theme",
+                            "value": "={{ $('Get first todo').item.json.Theme }}",
+                            "type": "string"
+                        },
+                        {
+                            "id": "f96677e2-9d10-4db4-9f0b-826ac5a2eaec",
+                            "name": "subject",
+                            "value": "={{ $('Get first todo').item.json[\"Subject 1\"] }}",
+                            "type": "string"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.set",
+            "typeVersion": 3.4,
+            "position": [
+                -5920,
+                -380
+            ],
+            "id": "9c5bb32f-8eca-4fd9-9987-ac753deb1844",
+            "name": "set props"
+        },
+        {
+            "parameters": {
+                "assignments": {
+                    "assignments": [
+                        {
+                            "id": "3f7846c8-2c7f-440f-8245-71bf158ea311",
+                            "name": "theme",
+                            "value": "={{ $('Get first todo').item.json.Theme }}",
+                            "type": "string"
+                        },
+                        {
+                            "id": "f96677e2-9d10-4db4-9f0b-826ac5a2eaec",
+                            "name": "subject",
+                            "value": "={{ $('Get first todo').item.json[\"Subject 2\"] }}",
+                            "type": "string"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.set",
+            "typeVersion": 3.4,
+            "position": [
+                -5920,
+                -180
+            ],
+            "id": "8078d721-27c2-491f-806a-436bfb1b6e3d",
+            "name": "set props1"
+        },
+        {
+            "parameters": {
+                "assignments": {
+                    "assignments": [
+                        {
+                            "id": "3f7846c8-2c7f-440f-8245-71bf158ea311",
+                            "name": "theme",
+                            "value": "={{ $('Get first todo').item.json.Theme }}",
+                            "type": "string"
+                        },
+                        {
+                            "id": "f96677e2-9d10-4db4-9f0b-826ac5a2eaec",
+                            "name": "subject",
+                            "value": "={{ $('Get first todo').item.json[\"Subject 3\"] }}",
+                            "type": "string"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.set",
+            "typeVersion": 3.4,
+            "position": [
+                -5920,
+                20
+            ],
+            "id": "89a7e701-c496-4023-ad21-57d34c2e5de1",
+            "name": "set props2"
+        },
+        {
+            "parameters": {
+                "assignments": {
+                    "assignments": [
+                        {
+                            "id": "3f7846c8-2c7f-440f-8245-71bf158ea311",
+                            "name": "theme",
+                            "value": "={{ $('Get first todo').item.json.Theme }}",
+                            "type": "string"
+                        },
+                        {
+                            "id": "f96677e2-9d10-4db4-9f0b-826ac5a2eaec",
+                            "name": "subject",
+                            "value": "={{ $('Get first todo').item.json[\"Subject 4\"] }}",
+                            "type": "string"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.set",
+            "typeVersion": 3.4,
+            "position": [
+                -5920,
+                220
+            ],
+            "id": "7fa3cc11-42ef-479a-85b0-6783a1d7c462",
+            "name": "set props3"
+        },
+        {
+            "parameters": {
+                "assignments": {
+                    "assignments": [
+                        {
+                            "id": "3f7846c8-2c7f-440f-8245-71bf158ea311",
+                            "name": "theme",
+                            "value": "={{ $('Get first todo').item.json.Theme }}",
+                            "type": "string"
+                        },
+                        {
+                            "id": "f96677e2-9d10-4db4-9f0b-826ac5a2eaec",
+                            "name": "subject",
+                            "value": "={{ $('Get first todo').item.json[\"Subject 5\"] }}",
+                            "type": "string"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.set",
+            "typeVersion": 3.4,
+            "position": [
+                -5920,
+                420
+            ],
+            "id": "3ca3504c-3acb-4afc-a63e-08a76fdfcc9f",
+            "name": "set props4"
+        },
+        {
+            "parameters": {
+                "assignments": {
+                    "assignments": [
+                        {
+                            "id": "3f7846c8-2c7f-440f-8245-71bf158ea311",
+                            "name": "theme",
+                            "value": "={{ $('Get first todo').item.json.Theme }}",
+                            "type": "string"
+                        },
+                        {
+                            "id": "f96677e2-9d10-4db4-9f0b-826ac5a2eaec",
+                            "name": "subject",
+                            "value": "={{ $('Get first todo').item.json[\"Subject 6\"] }}",
+                            "type": "string"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.set",
+            "typeVersion": 3.4,
+            "position": [
+                -5920,
+                620
+            ],
+            "id": "607d279b-5f3f-4296-9b81-5b65371c1de5",
+            "name": "set props5"
+        },
+        {
+            "parameters": {
+                "workflowId": {
+                    "__rl": true,
+                    "value": "20yB25V0FJZx7dif",
+                    "mode": "list",
+                    "cachedResultName": "Generate AI Image"
+                },
+                "workflowInputs": {
+                    "mappingMode": "defineBelow",
+                    "value": {
+                        "subject": "={{ $json.subject }}",
+                        "theme": "={{ $json.theme }}"
+                    },
+                    "matchingColumns": [],
+                    "schema": [
+                        {
+                            "id": "subject",
+                            "displayName": "subject",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "canBeUsedToMatch": true,
+                            "type": "string"
+                        },
+                        {
+                            "id": "theme",
+                            "displayName": "theme",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "canBeUsedToMatch": true,
+                            "type": "string",
+                            "removed": false
+                        }
+                    ],
+                    "attemptToConvertTypes": false,
+                    "convertFieldsToString": true
+                },
+                "options": {
+                    "waitForSubWorkflow": true
+                }
+            },
+            "type": "n8n-nodes-base.executeWorkflow",
+            "typeVersion": 1.2,
+            "position": [
+                -5700,
+                -180
+            ],
+            "id": "e5e4901c-91ca-410b-92d3-b175cb1a6b34",
+            "name": "Generate AI Image1",
+            "onError": "continueErrorOutput"
+        },
+        {
+            "parameters": {
+                "workflowId": {
+                    "__rl": true,
+                    "value": "20yB25V0FJZx7dif",
+                    "mode": "list",
+                    "cachedResultName": "Generate AI Image"
+                },
+                "workflowInputs": {
+                    "mappingMode": "defineBelow",
+                    "value": {
+                        "subject": "={{ $json.subject }}",
+                        "theme": "={{ $json.theme }}"
+                    },
+                    "matchingColumns": [],
+                    "schema": [
+                        {
+                            "id": "subject",
+                            "displayName": "subject",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "canBeUsedToMatch": true,
+                            "type": "string"
+                        },
+                        {
+                            "id": "theme",
+                            "displayName": "theme",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "canBeUsedToMatch": true,
+                            "type": "string",
+                            "removed": false
+                        }
+                    ],
+                    "attemptToConvertTypes": false,
+                    "convertFieldsToString": true
+                },
+                "options": {
+                    "waitForSubWorkflow": true
+                }
+            },
+            "type": "n8n-nodes-base.executeWorkflow",
+            "typeVersion": 1.2,
+            "position": [
+                -5700,
+                20
+            ],
+            "id": "2d2cc0d9-11ce-4cb5-9919-3f6e366fe5d4",
+            "name": "Generate AI Image2",
+            "executeOnce": false,
+            "onError": "continueErrorOutput"
+        },
+        {
+            "parameters": {
+                "workflowId": {
+                    "__rl": true,
+                    "value": "20yB25V0FJZx7dif",
+                    "mode": "list",
+                    "cachedResultName": "Generate AI Image"
+                },
+                "workflowInputs": {
+                    "mappingMode": "defineBelow",
+                    "value": {
+                        "subject": "={{ $json.subject }}",
+                        "theme": "={{ $json.theme }}"
+                    },
+                    "matchingColumns": [],
+                    "schema": [
+                        {
+                            "id": "subject",
+                            "displayName": "subject",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "canBeUsedToMatch": true,
+                            "type": "string"
+                        },
+                        {
+                            "id": "theme",
+                            "displayName": "theme",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "canBeUsedToMatch": true,
+                            "type": "string",
+                            "removed": false
+                        }
+                    ],
+                    "attemptToConvertTypes": false,
+                    "convertFieldsToString": true
+                },
+                "options": {
+                    "waitForSubWorkflow": true
+                }
+            },
+            "type": "n8n-nodes-base.executeWorkflow",
+            "typeVersion": 1.2,
+            "position": [
+                -5700,
+                220
+            ],
+            "id": "2937b457-36c7-4344-be05-ae23dfa94a51",
+            "name": "Generate AI Image3",
+            "onError": "continueErrorOutput"
+        },
+        {
+            "parameters": {
+                "workflowId": {
+                    "__rl": true,
+                    "value": "20yB25V0FJZx7dif",
+                    "mode": "list",
+                    "cachedResultName": "Generate AI Image"
+                },
+                "workflowInputs": {
+                    "mappingMode": "defineBelow",
+                    "value": {
+                        "subject": "={{ $json.subject }}",
+                        "theme": "={{ $json.theme }}"
+                    },
+                    "matchingColumns": [],
+                    "schema": [
+                        {
+                            "id": "subject",
+                            "displayName": "subject",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "canBeUsedToMatch": true,
+                            "type": "string"
+                        },
+                        {
+                            "id": "theme",
+                            "displayName": "theme",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "canBeUsedToMatch": true,
+                            "type": "string",
+                            "removed": false
+                        }
+                    ],
+                    "attemptToConvertTypes": false,
+                    "convertFieldsToString": true
+                },
+                "options": {
+                    "waitForSubWorkflow": true
+                }
+            },
+            "type": "n8n-nodes-base.executeWorkflow",
+            "typeVersion": 1.2,
+            "position": [
+                -5700,
+                420
+            ],
+            "id": "048cb013-7f6d-4a88-89e4-1a033884f50e",
+            "name": "Generate AI Image4",
+            "onError": "continueErrorOutput"
+        },
+        {
+            "parameters": {
+                "workflowId": {
+                    "__rl": true,
+                    "value": "20yB25V0FJZx7dif",
+                    "mode": "list",
+                    "cachedResultName": "Generate AI Image"
+                },
+                "workflowInputs": {
+                    "mappingMode": "defineBelow",
+                    "value": {
+                        "subject": "={{ $json.subject }}",
+                        "theme": "={{ $json.theme }}"
+                    },
+                    "matchingColumns": [],
+                    "schema": [
+                        {
+                            "id": "subject",
+                            "displayName": "subject",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "canBeUsedToMatch": true,
+                            "type": "string"
+                        },
+                        {
+                            "id": "theme",
+                            "displayName": "theme",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "canBeUsedToMatch": true,
+                            "type": "string",
+                            "removed": false
+                        }
+                    ],
+                    "attemptToConvertTypes": false,
+                    "convertFieldsToString": true
+                },
+                "options": {
+                    "waitForSubWorkflow": true
+                }
+            },
+            "type": "n8n-nodes-base.executeWorkflow",
+            "typeVersion": 1.2,
+            "position": [
+                -5700,
+                620
+            ],
+            "id": "39c2968d-7acd-4107-9689-a8855cf04bf5",
+            "name": "Generate AI Image5",
+            "onError": "continueErrorOutput"
+        },
+        {
+            "parameters": {
+                "operation": "update",
+                "documentId": {
+                    "__rl": true,
+                    "value": "15X0xFl0Ys2rt1M0MlozQKG88nZ8_UvfbC3tEpCyBN7c",
+                    "mode": "list",
+                    "cachedResultName": "Faceless Shorts Template",
+                    "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15X0xFl0Ys2rt1M0MlozQKG88nZ8_UvfbC3tEpCyBN7c/edit?usp=drivesdk"
+                },
+                "sheetName": {
+                    "__rl": true,
+                    "value": 66809402,
+                    "mode": "list",
+                    "cachedResultName": "image completions",
+                    "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15X0xFl0Ys2rt1M0MlozQKG88nZ8_UvfbC3tEpCyBN7c/edit#gid=66809402"
+                },
+                "columns": {
+                    "mappingMode": "defineBelow",
+                    "value": {
+                        "Theme": "={{ $('set props').item.json.theme }}",
+                        "Subject 1": "={{ $json.image_generated }}"
+                    },
+                    "matchingColumns": [
+                        "Theme"
+                    ],
+                    "schema": [
+                        {
+                            "id": "Theme",
+                            "displayName": "Theme",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": false
+                        },
+                        {
+                            "id": "Subject 1",
+                            "displayName": "Subject 1",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": false
+                        },
+                        {
+                            "id": "Subject 2",
+                            "displayName": "Subject 2",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "Subject 3",
+                            "displayName": "Subject 3",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "Subject 4",
+                            "displayName": "Subject 4",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "Subject 5",
+                            "displayName": "Subject 5",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "Subject 6",
+                            "displayName": "Subject 6",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "row_number",
+                            "displayName": "row_number",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "readOnly": true,
+                            "removed": true
+                        }
+                    ],
+                    "attemptToConvertTypes": false,
+                    "convertFieldsToString": false
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.googleSheets",
+            "typeVersion": 4.5,
+            "position": [
+                -5480,
+                -380
+            ],
+            "id": "60a167ab-3396-4c4a-a7ef-43b4fbcc7576",
+            "name": "Update link",
+            "alwaysOutputData": true,
+            "credentials": {
+                "googleSheetsOAuth2Api": {
+                    "id": "kDHpIeRydLPGpkRY",
+                    "name": "Google Sheets account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "operation": "update",
+                "documentId": {
+                    "__rl": true,
+                    "value": "15X0xFl0Ys2rt1M0MlozQKG88nZ8_UvfbC3tEpCyBN7c",
+                    "mode": "list",
+                    "cachedResultName": "Faceless Shorts Template",
+                    "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15X0xFl0Ys2rt1M0MlozQKG88nZ8_UvfbC3tEpCyBN7c/edit?usp=drivesdk"
+                },
+                "sheetName": {
+                    "__rl": true,
+                    "value": 66809402,
+                    "mode": "list",
+                    "cachedResultName": "image completions",
+                    "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15X0xFl0Ys2rt1M0MlozQKG88nZ8_UvfbC3tEpCyBN7c/edit#gid=66809402"
+                },
+                "columns": {
+                    "mappingMode": "defineBelow",
+                    "value": {
+                        "Subject 2": "={{ $json.image_generated }}",
+                        "Theme": "={{ $('set props1').item.json.theme }}"
+                    },
+                    "matchingColumns": [
+                        "Theme"
+                    ],
+                    "schema": [
+                        {
+                            "id": "Theme",
+                            "displayName": "Theme",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": false
+                        },
+                        {
+                            "id": "Subject 1",
+                            "displayName": "Subject 1",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "Subject 2",
+                            "displayName": "Subject 2",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": false
+                        },
+                        {
+                            "id": "Subject 3",
+                            "displayName": "Subject 3",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "Subject 4",
+                            "displayName": "Subject 4",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "Subject 5",
+                            "displayName": "Subject 5",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "Subject 6",
+                            "displayName": "Subject 6",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "row_number",
+                            "displayName": "row_number",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "readOnly": true,
+                            "removed": true
+                        }
+                    ],
+                    "attemptToConvertTypes": false,
+                    "convertFieldsToString": false
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.googleSheets",
+            "typeVersion": 4.5,
+            "position": [
+                -5480,
+                -180
+            ],
+            "id": "4ce39f10-5ebf-40cc-8bd6-8e734733a45e",
+            "name": "Update link1",
+            "alwaysOutputData": true,
+            "credentials": {
+                "googleSheetsOAuth2Api": {
+                    "id": "kDHpIeRydLPGpkRY",
+                    "name": "Google Sheets account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "operation": "update",
+                "documentId": {
+                    "__rl": true,
+                    "value": "15X0xFl0Ys2rt1M0MlozQKG88nZ8_UvfbC3tEpCyBN7c",
+                    "mode": "list",
+                    "cachedResultName": "Faceless Shorts Template",
+                    "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15X0xFl0Ys2rt1M0MlozQKG88nZ8_UvfbC3tEpCyBN7c/edit?usp=drivesdk"
+                },
+                "sheetName": {
+                    "__rl": true,
+                    "value": 66809402,
+                    "mode": "list",
+                    "cachedResultName": "image completions",
+                    "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15X0xFl0Ys2rt1M0MlozQKG88nZ8_UvfbC3tEpCyBN7c/edit#gid=66809402"
+                },
+                "columns": {
+                    "mappingMode": "defineBelow",
+                    "value": {
+                        "Theme": "={{ $('set props2').item.json.theme }}",
+                        "Subject 3": "={{ $json.image_generated }}"
+                    },
+                    "matchingColumns": [
+                        "Theme"
+                    ],
+                    "schema": [
+                        {
+                            "id": "Theme",
+                            "displayName": "Theme",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": false
+                        },
+                        {
+                            "id": "Subject 1",
+                            "displayName": "Subject 1",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "Subject 2",
+                            "displayName": "Subject 2",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "Subject 3",
+                            "displayName": "Subject 3",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": false
+                        },
+                        {
+                            "id": "Subject 4",
+                            "displayName": "Subject 4",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "Subject 5",
+                            "displayName": "Subject 5",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "Subject 6",
+                            "displayName": "Subject 6",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "row_number",
+                            "displayName": "row_number",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "readOnly": true,
+                            "removed": true
+                        }
+                    ],
+                    "attemptToConvertTypes": false,
+                    "convertFieldsToString": false
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.googleSheets",
+            "typeVersion": 4.5,
+            "position": [
+                -5480,
+                20
+            ],
+            "id": "a0e18acc-d1ce-463a-9d1a-2c117547b5b6",
+            "name": "Update link2",
+            "alwaysOutputData": true,
+            "credentials": {
+                "googleSheetsOAuth2Api": {
+                    "id": "kDHpIeRydLPGpkRY",
+                    "name": "Google Sheets account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "operation": "update",
+                "documentId": {
+                    "__rl": true,
+                    "value": "15X0xFl0Ys2rt1M0MlozQKG88nZ8_UvfbC3tEpCyBN7c",
+                    "mode": "list",
+                    "cachedResultName": "Faceless Shorts Template",
+                    "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15X0xFl0Ys2rt1M0MlozQKG88nZ8_UvfbC3tEpCyBN7c/edit?usp=drivesdk"
+                },
+                "sheetName": {
+                    "__rl": true,
+                    "value": 66809402,
+                    "mode": "list",
+                    "cachedResultName": "image completions",
+                    "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15X0xFl0Ys2rt1M0MlozQKG88nZ8_UvfbC3tEpCyBN7c/edit#gid=66809402"
+                },
+                "columns": {
+                    "mappingMode": "defineBelow",
+                    "value": {
+                        "Subject 4": "={{ $json.image_generated }}",
+                        "Theme": "={{ $('set props3').item.json.theme }}"
+                    },
+                    "matchingColumns": [
+                        "Theme"
+                    ],
+                    "schema": [
+                        {
+                            "id": "Theme",
+                            "displayName": "Theme",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": false
+                        },
+                        {
+                            "id": "Subject 1",
+                            "displayName": "Subject 1",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "Subject 2",
+                            "displayName": "Subject 2",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "Subject 3",
+                            "displayName": "Subject 3",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "Subject 4",
+                            "displayName": "Subject 4",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": false
+                        },
+                        {
+                            "id": "Subject 5",
+                            "displayName": "Subject 5",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "Subject 6",
+                            "displayName": "Subject 6",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "row_number",
+                            "displayName": "row_number",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "readOnly": true,
+                            "removed": true
+                        }
+                    ],
+                    "attemptToConvertTypes": false,
+                    "convertFieldsToString": false
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.googleSheets",
+            "typeVersion": 4.5,
+            "position": [
+                -5480,
+                220
+            ],
+            "id": "00afe154-463a-48dd-a184-c9cf70be6649",
+            "name": "Update link3",
+            "alwaysOutputData": true,
+            "credentials": {
+                "googleSheetsOAuth2Api": {
+                    "id": "kDHpIeRydLPGpkRY",
+                    "name": "Google Sheets account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "operation": "update",
+                "documentId": {
+                    "__rl": true,
+                    "value": "15X0xFl0Ys2rt1M0MlozQKG88nZ8_UvfbC3tEpCyBN7c",
+                    "mode": "list",
+                    "cachedResultName": "Faceless Shorts Template",
+                    "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15X0xFl0Ys2rt1M0MlozQKG88nZ8_UvfbC3tEpCyBN7c/edit?usp=drivesdk"
+                },
+                "sheetName": {
+                    "__rl": true,
+                    "value": 66809402,
+                    "mode": "list",
+                    "cachedResultName": "image completions",
+                    "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15X0xFl0Ys2rt1M0MlozQKG88nZ8_UvfbC3tEpCyBN7c/edit#gid=66809402"
+                },
+                "columns": {
+                    "mappingMode": "defineBelow",
+                    "value": {
+                        "Theme": "={{ $('set props4').item.json.theme }}",
+                        "Subject 5": "={{ $json.image_generated }}"
+                    },
+                    "matchingColumns": [
+                        "Theme"
+                    ],
+                    "schema": [
+                        {
+                            "id": "Theme",
+                            "displayName": "Theme",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": false
+                        },
+                        {
+                            "id": "Subject 1",
+                            "displayName": "Subject 1",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "Subject 2",
+                            "displayName": "Subject 2",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "Subject 3",
+                            "displayName": "Subject 3",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "Subject 4",
+                            "displayName": "Subject 4",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "Subject 5",
+                            "displayName": "Subject 5",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": false
+                        },
+                        {
+                            "id": "Subject 6",
+                            "displayName": "Subject 6",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "row_number",
+                            "displayName": "row_number",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "readOnly": true,
+                            "removed": true
+                        }
+                    ],
+                    "attemptToConvertTypes": false,
+                    "convertFieldsToString": false
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.googleSheets",
+            "typeVersion": 4.5,
+            "position": [
+                -5480,
+                420
+            ],
+            "id": "770235d5-df1b-43f4-921e-01764eff19d3",
+            "name": "Update link4",
+            "alwaysOutputData": true,
+            "credentials": {
+                "googleSheetsOAuth2Api": {
+                    "id": "kDHpIeRydLPGpkRY",
+                    "name": "Google Sheets account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "operation": "update",
+                "documentId": {
+                    "__rl": true,
+                    "value": "15X0xFl0Ys2rt1M0MlozQKG88nZ8_UvfbC3tEpCyBN7c",
+                    "mode": "list",
+                    "cachedResultName": "Faceless Shorts Template",
+                    "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15X0xFl0Ys2rt1M0MlozQKG88nZ8_UvfbC3tEpCyBN7c/edit?usp=drivesdk"
+                },
+                "sheetName": {
+                    "__rl": true,
+                    "value": 66809402,
+                    "mode": "list",
+                    "cachedResultName": "image completions",
+                    "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15X0xFl0Ys2rt1M0MlozQKG88nZ8_UvfbC3tEpCyBN7c/edit#gid=66809402"
+                },
+                "columns": {
+                    "mappingMode": "defineBelow",
+                    "value": {
+                        "Theme": "={{ $('set props5').item.json.theme }}",
+                        "Subject 6": "={{ $json.image_generated }}"
+                    },
+                    "matchingColumns": [
+                        "Theme"
+                    ],
+                    "schema": [
+                        {
+                            "id": "Theme",
+                            "displayName": "Theme",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": false
+                        },
+                        {
+                            "id": "Subject 1",
+                            "displayName": "Subject 1",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "Subject 2",
+                            "displayName": "Subject 2",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "Subject 3",
+                            "displayName": "Subject 3",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "Subject 4",
+                            "displayName": "Subject 4",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "Subject 5",
+                            "displayName": "Subject 5",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "Subject 6",
+                            "displayName": "Subject 6",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": false
+                        },
+                        {
+                            "id": "row_number",
+                            "displayName": "row_number",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "readOnly": true,
+                            "removed": true
+                        }
+                    ],
+                    "attemptToConvertTypes": false,
+                    "convertFieldsToString": false
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.googleSheets",
+            "typeVersion": 4.5,
+            "position": [
+                -5480,
+                620
+            ],
+            "id": "054d6b50-90c0-40d9-a821-8043c9f99331",
+            "name": "Update link5",
+            "alwaysOutputData": true,
+            "credentials": {
+                "googleSheetsOAuth2Api": {
+                    "id": "kDHpIeRydLPGpkRY",
+                    "name": "Google Sheets account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "operation": "update",
+                "documentId": {
+                    "__rl": true,
+                    "value": "15X0xFl0Ys2rt1M0MlozQKG88nZ8_UvfbC3tEpCyBN7c",
+                    "mode": "list",
+                    "cachedResultName": "Faceless Shorts Template",
+                    "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15X0xFl0Ys2rt1M0MlozQKG88nZ8_UvfbC3tEpCyBN7c/edit?usp=drivesdk"
+                },
+                "sheetName": {
+                    "__rl": true,
+                    "value": 2080377320,
+                    "mode": "list",
+                    "cachedResultName": "video completions",
+                    "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15X0xFl0Ys2rt1M0MlozQKG88nZ8_UvfbC3tEpCyBN7c/edit#gid=2080377320"
+                },
+                "columns": {
+                    "mappingMode": "defineBelow",
+                    "value": {
+                        "Subject 2": "={{ $json.video_url }}",
+                        "Theme": "={{ $('get video progress').item.json.Theme }}"
+                    },
+                    "matchingColumns": [
+                        "Theme"
+                    ],
+                    "schema": [
+                        {
+                            "id": "Theme",
+                            "displayName": "Theme",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": false
+                        },
+                        {
+                            "id": "Subject 1",
+                            "displayName": "Subject 1",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "Subject 2",
+                            "displayName": "Subject 2",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": false
+                        },
+                        {
+                            "id": "Subject 3",
+                            "displayName": "Subject 3",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "Subject 4",
+                            "displayName": "Subject 4",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "Subject 5",
+                            "displayName": "Subject 5",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "Subject 6",
+                            "displayName": "Subject 6",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "row_number",
+                            "displayName": "row_number",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "readOnly": true,
+                            "removed": true
+                        }
+                    ],
+                    "attemptToConvertTypes": false,
+                    "convertFieldsToString": false
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.googleSheets",
+            "typeVersion": 4.5,
+            "position": [
+                -4320,
+                -180
+            ],
+            "id": "77a70132-d278-4a59-bbbc-8724297a235d",
+            "name": "update video1",
+            "alwaysOutputData": true,
+            "credentials": {
+                "googleSheetsOAuth2Api": {
+                    "id": "kDHpIeRydLPGpkRY",
+                    "name": "Google Sheets account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "documentId": {
+                    "__rl": true,
+                    "value": "15X0xFl0Ys2rt1M0MlozQKG88nZ8_UvfbC3tEpCyBN7c",
+                    "mode": "list",
+                    "cachedResultName": "Faceless Shorts Template",
+                    "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15X0xFl0Ys2rt1M0MlozQKG88nZ8_UvfbC3tEpCyBN7c/edit?usp=drivesdk"
+                },
+                "sheetName": {
+                    "__rl": true,
+                    "value": 2080377320,
+                    "mode": "list",
+                    "cachedResultName": "video completions",
+                    "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15X0xFl0Ys2rt1M0MlozQKG88nZ8_UvfbC3tEpCyBN7c/edit#gid=2080377320"
+                },
+                "filtersUI": {
+                    "values": [
+                        {
+                            "lookupColumn": "Theme",
+                            "lookupValue": "={{ $json.Theme }}"
+                        }
+                    ]
+                },
+                "options": {
+                    "returnFirstMatch": true
+                }
+            },
+            "type": "n8n-nodes-base.googleSheets",
+            "typeVersion": 4.5,
+            "position": [
+                -5520,
+                960
+            ],
+            "id": "63137f6a-2297-468b-ba37-bc080794622b",
+            "name": "get video progress",
+            "alwaysOutputData": true,
+            "credentials": {
+                "googleSheetsOAuth2Api": {
+                    "id": "kDHpIeRydLPGpkRY",
+                    "name": "Google Sheets account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "rules": {
+                    "values": [
+                        {
+                            "conditions": {
+                                "options": {
+                                    "caseSensitive": true,
+                                    "leftValue": "",
+                                    "typeValidation": "strict",
+                                    "version": 2
+                                },
+                                "conditions": [
+                                    {
+                                        "leftValue": "={{ $json[\"Subject 1\"] }}",
+                                        "rightValue": "",
+                                        "operator": {
+                                            "type": "string",
+                                            "operation": "empty",
+                                            "singleValue": true
+                                        },
+                                        "id": "eb53c94a-5d20-41ae-bb25-0234cf70101a"
+                                    }
+                                ],
+                                "combinator": "and"
+                            },
+                            "renameOutput": true,
+                            "outputKey": "subject 1"
+                        },
+                        {
+                            "conditions": {
+                                "options": {
+                                    "caseSensitive": true,
+                                    "leftValue": "",
+                                    "typeValidation": "strict",
+                                    "version": 2
+                                },
+                                "conditions": [
+                                    {
+                                        "id": "06430b15-bb54-4afb-aa86-018590f66e27",
+                                        "leftValue": "={{ $json[\"Subject 2\"] }}",
+                                        "rightValue": "",
+                                        "operator": {
+                                            "type": "string",
+                                            "operation": "empty",
+                                            "singleValue": true
+                                        }
+                                    }
+                                ],
+                                "combinator": "and"
+                            },
+                            "renameOutput": true,
+                            "outputKey": "subject  2"
+                        },
+                        {
+                            "conditions": {
+                                "options": {
+                                    "caseSensitive": true,
+                                    "leftValue": "",
+                                    "typeValidation": "strict",
+                                    "version": 2
+                                },
+                                "conditions": [
+                                    {
+                                        "id": "7c1b280e-65a0-480e-b032-e3d515ebeee2",
+                                        "leftValue": "={{ $json[\"Subject 3\"] }}",
+                                        "rightValue": "",
+                                        "operator": {
+                                            "type": "string",
+                                            "operation": "empty",
+                                            "singleValue": true
+                                        }
+                                    }
+                                ],
+                                "combinator": "and"
+                            },
+                            "renameOutput": true,
+                            "outputKey": "subject  3"
+                        },
+                        {
+                            "conditions": {
+                                "options": {
+                                    "caseSensitive": true,
+                                    "leftValue": "",
+                                    "typeValidation": "strict",
+                                    "version": 2
+                                },
+                                "conditions": [
+                                    {
+                                        "id": "bbd012b9-903d-4b35-bbac-92edb515719c",
+                                        "leftValue": "={{ $json[\"Subject 4\"] }}",
+                                        "rightValue": "",
+                                        "operator": {
+                                            "type": "string",
+                                            "operation": "empty",
+                                            "singleValue": true
+                                        }
+                                    }
+                                ],
+                                "combinator": "and"
+                            },
+                            "renameOutput": true,
+                            "outputKey": "subject  4"
+                        },
+                        {
+                            "conditions": {
+                                "options": {
+                                    "caseSensitive": true,
+                                    "leftValue": "",
+                                    "typeValidation": "strict",
+                                    "version": 2
+                                },
+                                "conditions": [
+                                    {
+                                        "id": "da16038d-8fe8-4b48-b94a-dba332168b31",
+                                        "leftValue": "={{ $json[\"Subject 5\"] }}",
+                                        "rightValue": "",
+                                        "operator": {
+                                            "type": "string",
+                                            "operation": "empty",
+                                            "singleValue": true
+                                        }
+                                    }
+                                ],
+                                "combinator": "and"
+                            },
+                            "renameOutput": true,
+                            "outputKey": "subject  5"
+                        },
+                        {
+                            "conditions": {
+                                "options": {
+                                    "caseSensitive": true,
+                                    "leftValue": "",
+                                    "typeValidation": "strict",
+                                    "version": 2
+                                },
+                                "conditions": [
+                                    {
+                                        "id": "f9a498f4-de48-458a-88dc-4e0d217c8eb2",
+                                        "leftValue": "={{ $json[\"Subject 6\"] }}",
+                                        "rightValue": "",
+                                        "operator": {
+                                            "type": "string",
+                                            "operation": "empty",
+                                            "singleValue": true
+                                        }
+                                    }
+                                ],
+                                "combinator": "and"
+                            },
+                            "renameOutput": true,
+                            "outputKey": "subject  6"
+                        }
+                    ]
+                },
+                "options": {
+                    "fallbackOutput": "extra",
+                    "allMatchingOutputs": true
+                }
+            },
+            "type": "n8n-nodes-base.switch",
+            "typeVersion": 3.2,
+            "position": [
+                -4940,
+                480
+            ],
+            "id": "bcdcb79f-5815-4403-96c9-f30e4962e800",
+            "name": "Switch6"
+        },
+        {
+            "parameters": {
+                "workflowId": {
+                    "__rl": true,
+                    "value": "wIGE4ogMDsVpCs0V",
+                    "mode": "list",
+                    "cachedResultName": "Generate AI video"
+                },
+                "workflowInputs": {
+                    "mappingMode": "defineBelow",
+                    "value": {
+                        "image_url": "={{ $('get image progress').first().json[\"Subject 2\"] }}"
+                    },
+                    "matchingColumns": [
+                        "image_url"
+                    ],
+                    "schema": [
+                        {
+                            "id": "image_url",
+                            "displayName": "image_url",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "canBeUsedToMatch": true,
+                            "type": "string",
+                            "removed": false
+                        }
+                    ],
+                    "attemptToConvertTypes": false,
+                    "convertFieldsToString": true
+                },
+                "options": {
+                    "waitForSubWorkflow": true
+                }
+            },
+            "type": "n8n-nodes-base.executeWorkflow",
+            "typeVersion": 1.2,
+            "position": [
+                -4540,
+                -180
+            ],
+            "id": "1ec332e3-c962-4d3a-b1c7-74512b75fcb1",
+            "name": "Generate AI video1",
+            "onError": "continueErrorOutput"
+        },
+        {
+            "parameters": {
+                "documentId": {
+                    "__rl": true,
+                    "value": "15X0xFl0Ys2rt1M0MlozQKG88nZ8_UvfbC3tEpCyBN7c",
+                    "mode": "list",
+                    "cachedResultName": "Faceless Shorts Template",
+                    "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15X0xFl0Ys2rt1M0MlozQKG88nZ8_UvfbC3tEpCyBN7c/edit?usp=drivesdk"
+                },
+                "sheetName": {
+                    "__rl": true,
+                    "value": 66809402,
+                    "mode": "list",
+                    "cachedResultName": "image completions",
+                    "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15X0xFl0Ys2rt1M0MlozQKG88nZ8_UvfbC3tEpCyBN7c/edit#gid=66809402"
+                },
+                "filtersUI": {
+                    "values": [
+                        {
+                            "lookupColumn": "Theme",
+                            "lookupValue": "={{ $json.Theme }}"
+                        }
+                    ]
+                },
+                "options": {
+                    "returnFirstMatch": true
+                }
+            },
+            "type": "n8n-nodes-base.googleSheets",
+            "typeVersion": 4.5,
+            "position": [
+                -7120,
+                617
+            ],
+            "id": "84707b19-648f-4740-9d36-73f50b3eda6d",
+            "name": "get image progress",
+            "alwaysOutputData": true,
+            "credentials": {
+                "googleSheetsOAuth2Api": {
+                    "id": "kDHpIeRydLPGpkRY",
+                    "name": "Google Sheets account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "workflowId": {
+                    "__rl": true,
+                    "value": "wIGE4ogMDsVpCs0V",
+                    "mode": "list",
+                    "cachedResultName": "Generate AI video"
+                },
+                "workflowInputs": {
+                    "mappingMode": "defineBelow",
+                    "value": {
+                        "image_url": "={{ $('get image progress').first().json[\"Subject 1\"] }}"
+                    },
+                    "matchingColumns": [
+                        "image_url"
+                    ],
+                    "schema": [
+                        {
+                            "id": "image_url",
+                            "displayName": "image_url",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "canBeUsedToMatch": true,
+                            "type": "string",
+                            "removed": false
+                        }
+                    ],
+                    "attemptToConvertTypes": false,
+                    "convertFieldsToString": true
+                },
+                "options": {
+                    "waitForSubWorkflow": true
+                }
+            },
+            "type": "n8n-nodes-base.executeWorkflow",
+            "typeVersion": 1.2,
+            "position": [
+                -4540,
+                -380
+            ],
+            "id": "24fa8111-bb2d-4bb9-848f-93f003110cbb",
+            "name": "Generate AI video2",
+            "onError": "continueErrorOutput"
+        },
+        {
+            "parameters": {
+                "workflowId": {
+                    "__rl": true,
+                    "value": "wIGE4ogMDsVpCs0V",
+                    "mode": "list",
+                    "cachedResultName": "Generate AI video"
+                },
+                "workflowInputs": {
+                    "mappingMode": "defineBelow",
+                    "value": {
+                        "image_url": "={{ $('get image progress').first().json[\"Subject 3\"] }}"
+                    },
+                    "matchingColumns": [
+                        "image_url"
+                    ],
+                    "schema": [
+                        {
+                            "id": "image_url",
+                            "displayName": "image_url",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "canBeUsedToMatch": true,
+                            "type": "string",
+                            "removed": false
+                        }
+                    ],
+                    "attemptToConvertTypes": false,
+                    "convertFieldsToString": true
+                },
+                "options": {
+                    "waitForSubWorkflow": true
+                }
+            },
+            "type": "n8n-nodes-base.executeWorkflow",
+            "typeVersion": 1.2,
+            "position": [
+                -4540,
+                20
+            ],
+            "id": "899726b7-08f3-4c4c-8012-b325e4932809",
+            "name": "Generate AI video",
+            "onError": "continueErrorOutput"
+        },
+        {
+            "parameters": {
+                "workflowId": {
+                    "__rl": true,
+                    "value": "wIGE4ogMDsVpCs0V",
+                    "mode": "list",
+                    "cachedResultName": "Generate AI video"
+                },
+                "workflowInputs": {
+                    "mappingMode": "defineBelow",
+                    "value": {
+                        "image_url": "={{ $('get image progress').first().json[\"Subject 4\"] }}"
+                    },
+                    "matchingColumns": [
+                        "image_url"
+                    ],
+                    "schema": [
+                        {
+                            "id": "image_url",
+                            "displayName": "image_url",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "canBeUsedToMatch": true,
+                            "type": "string",
+                            "removed": false
+                        }
+                    ],
+                    "attemptToConvertTypes": false,
+                    "convertFieldsToString": true
+                },
+                "options": {
+                    "waitForSubWorkflow": true
+                }
+            },
+            "type": "n8n-nodes-base.executeWorkflow",
+            "typeVersion": 1.2,
+            "position": [
+                -4540,
+                240
+            ],
+            "id": "661f51cb-3ec8-4670-9c7f-5afa5d48e3ee",
+            "name": "Generate AI video3",
+            "onError": "continueErrorOutput"
+        },
+        {
+            "parameters": {
+                "workflowId": {
+                    "__rl": true,
+                    "value": "wIGE4ogMDsVpCs0V",
+                    "mode": "list",
+                    "cachedResultName": "Generate AI video"
+                },
+                "workflowInputs": {
+                    "mappingMode": "defineBelow",
+                    "value": {
+                        "image_url": "={{ $('get image progress').first().json[\"Subject 5\"] }}"
+                    },
+                    "matchingColumns": [
+                        "image_url"
+                    ],
+                    "schema": [
+                        {
+                            "id": "image_url",
+                            "displayName": "image_url",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "canBeUsedToMatch": true,
+                            "type": "string",
+                            "removed": false
+                        }
+                    ],
+                    "attemptToConvertTypes": false,
+                    "convertFieldsToString": true
+                },
+                "options": {
+                    "waitForSubWorkflow": true
+                }
+            },
+            "type": "n8n-nodes-base.executeWorkflow",
+            "typeVersion": 1.2,
+            "position": [
+                -4540,
+                420
+            ],
+            "id": "8b62ea9c-6afb-4fe3-9316-cecf5950b2d0",
+            "name": "Generate AI video4",
+            "retryOnFail": false,
+            "onError": "continueErrorOutput"
+        },
+        {
+            "parameters": {
+                "workflowId": {
+                    "__rl": true,
+                    "value": "wIGE4ogMDsVpCs0V",
+                    "mode": "list",
+                    "cachedResultName": "Generate AI video"
+                },
+                "workflowInputs": {
+                    "mappingMode": "defineBelow",
+                    "value": {
+                        "image_url": "={{ $('get image progress').first().json[\"Subject 6\"] }}"
+                    },
+                    "matchingColumns": [
+                        "image_url"
+                    ],
+                    "schema": [
+                        {
+                            "id": "image_url",
+                            "displayName": "image_url",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "canBeUsedToMatch": true,
+                            "type": "string",
+                            "removed": false
+                        }
+                    ],
+                    "attemptToConvertTypes": false,
+                    "convertFieldsToString": true
+                },
+                "options": {
+                    "waitForSubWorkflow": true
+                }
+            },
+            "type": "n8n-nodes-base.executeWorkflow",
+            "typeVersion": 1.2,
+            "position": [
+                -4540,
+                620
+            ],
+            "id": "40e8f783-f03b-4ced-8053-6a4d968af588",
+            "name": "Generate AI video5",
+            "onError": "continueErrorOutput"
+        },
+        {
+            "parameters": {
+                "operation": "update",
+                "documentId": {
+                    "__rl": true,
+                    "value": "15X0xFl0Ys2rt1M0MlozQKG88nZ8_UvfbC3tEpCyBN7c",
+                    "mode": "list",
+                    "cachedResultName": "Faceless Shorts Template",
+                    "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15X0xFl0Ys2rt1M0MlozQKG88nZ8_UvfbC3tEpCyBN7c/edit?usp=drivesdk"
+                },
+                "sheetName": {
+                    "__rl": true,
+                    "value": 2080377320,
+                    "mode": "list",
+                    "cachedResultName": "video completions",
+                    "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15X0xFl0Ys2rt1M0MlozQKG88nZ8_UvfbC3tEpCyBN7c/edit#gid=2080377320"
+                },
+                "columns": {
+                    "mappingMode": "defineBelow",
+                    "value": {
+                        "Subject 1": "={{ $json.video_url }}",
+                        "Theme": "={{ $('get video progress').item.json.Theme }}"
+                    },
+                    "matchingColumns": [
+                        "Theme"
+                    ],
+                    "schema": [
+                        {
+                            "id": "Theme",
+                            "displayName": "Theme",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": false
+                        },
+                        {
+                            "id": "Subject 1",
+                            "displayName": "Subject 1",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": false
+                        },
+                        {
+                            "id": "Subject 2",
+                            "displayName": "Subject 2",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "Subject 3",
+                            "displayName": "Subject 3",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "Subject 4",
+                            "displayName": "Subject 4",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "Subject 5",
+                            "displayName": "Subject 5",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "Subject 6",
+                            "displayName": "Subject 6",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "row_number",
+                            "displayName": "row_number",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "readOnly": true,
+                            "removed": true
+                        }
+                    ],
+                    "attemptToConvertTypes": false,
+                    "convertFieldsToString": false
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.googleSheets",
+            "typeVersion": 4.5,
+            "position": [
+                -4320,
+                -380
+            ],
+            "id": "099627c6-7527-4f5d-b12a-31f764556b28",
+            "name": "update video",
+            "alwaysOutputData": true,
+            "credentials": {
+                "googleSheetsOAuth2Api": {
+                    "id": "kDHpIeRydLPGpkRY",
+                    "name": "Google Sheets account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "operation": "update",
+                "documentId": {
+                    "__rl": true,
+                    "value": "15X0xFl0Ys2rt1M0MlozQKG88nZ8_UvfbC3tEpCyBN7c",
+                    "mode": "list",
+                    "cachedResultName": "Faceless Shorts Template",
+                    "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15X0xFl0Ys2rt1M0MlozQKG88nZ8_UvfbC3tEpCyBN7c/edit?usp=drivesdk"
+                },
+                "sheetName": {
+                    "__rl": true,
+                    "value": 2080377320,
+                    "mode": "list",
+                    "cachedResultName": "video completions",
+                    "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15X0xFl0Ys2rt1M0MlozQKG88nZ8_UvfbC3tEpCyBN7c/edit#gid=2080377320"
+                },
+                "columns": {
+                    "mappingMode": "defineBelow",
+                    "value": {
+                        "Subject 3": "={{ $json.video_url }}",
+                        "Theme": "={{ $('get video progress').item.json.Theme }}"
+                    },
+                    "matchingColumns": [
+                        "Theme"
+                    ],
+                    "schema": [
+                        {
+                            "id": "Theme",
+                            "displayName": "Theme",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": false
+                        },
+                        {
+                            "id": "Subject 1",
+                            "displayName": "Subject 1",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "Subject 2",
+                            "displayName": "Subject 2",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "Subject 3",
+                            "displayName": "Subject 3",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": false
+                        },
+                        {
+                            "id": "Subject 4",
+                            "displayName": "Subject 4",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "Subject 5",
+                            "displayName": "Subject 5",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "Subject 6",
+                            "displayName": "Subject 6",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "row_number",
+                            "displayName": "row_number",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "readOnly": true,
+                            "removed": true
+                        }
+                    ],
+                    "attemptToConvertTypes": false,
+                    "convertFieldsToString": false
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.googleSheets",
+            "typeVersion": 4.5,
+            "position": [
+                -4320,
+                20
+            ],
+            "id": "4c93c1ed-8dca-4559-a81e-7e5a216b0652",
+            "name": "update video2",
+            "alwaysOutputData": true,
+            "credentials": {
+                "googleSheetsOAuth2Api": {
+                    "id": "kDHpIeRydLPGpkRY",
+                    "name": "Google Sheets account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "operation": "update",
+                "documentId": {
+                    "__rl": true,
+                    "value": "15X0xFl0Ys2rt1M0MlozQKG88nZ8_UvfbC3tEpCyBN7c",
+                    "mode": "list",
+                    "cachedResultName": "Faceless Shorts Template",
+                    "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15X0xFl0Ys2rt1M0MlozQKG88nZ8_UvfbC3tEpCyBN7c/edit?usp=drivesdk"
+                },
+                "sheetName": {
+                    "__rl": true,
+                    "value": 2080377320,
+                    "mode": "list",
+                    "cachedResultName": "video completions",
+                    "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15X0xFl0Ys2rt1M0MlozQKG88nZ8_UvfbC3tEpCyBN7c/edit#gid=2080377320"
+                },
+                "columns": {
+                    "mappingMode": "defineBelow",
+                    "value": {
+                        "Subject 4": "={{ $json.video_url }}",
+                        "Theme": "={{ $('get video progress').item.json.Theme }}"
+                    },
+                    "matchingColumns": [
+                        "Theme"
+                    ],
+                    "schema": [
+                        {
+                            "id": "Theme",
+                            "displayName": "Theme",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": false
+                        },
+                        {
+                            "id": "Subject 1",
+                            "displayName": "Subject 1",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "Subject 2",
+                            "displayName": "Subject 2",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "Subject 3",
+                            "displayName": "Subject 3",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "Subject 4",
+                            "displayName": "Subject 4",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": false
+                        },
+                        {
+                            "id": "Subject 5",
+                            "displayName": "Subject 5",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "Subject 6",
+                            "displayName": "Subject 6",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "row_number",
+                            "displayName": "row_number",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "readOnly": true,
+                            "removed": true
+                        }
+                    ],
+                    "attemptToConvertTypes": false,
+                    "convertFieldsToString": false
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.googleSheets",
+            "typeVersion": 4.5,
+            "position": [
+                -4320,
+                220
+            ],
+            "id": "32330933-7cbd-471e-85ad-06031d83ea47",
+            "name": "update video3",
+            "alwaysOutputData": true,
+            "credentials": {
+                "googleSheetsOAuth2Api": {
+                    "id": "kDHpIeRydLPGpkRY",
+                    "name": "Google Sheets account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "operation": "update",
+                "documentId": {
+                    "__rl": true,
+                    "value": "15X0xFl0Ys2rt1M0MlozQKG88nZ8_UvfbC3tEpCyBN7c",
+                    "mode": "list",
+                    "cachedResultName": "Faceless Shorts Template",
+                    "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15X0xFl0Ys2rt1M0MlozQKG88nZ8_UvfbC3tEpCyBN7c/edit?usp=drivesdk"
+                },
+                "sheetName": {
+                    "__rl": true,
+                    "value": 2080377320,
+                    "mode": "list",
+                    "cachedResultName": "video completions",
+                    "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15X0xFl0Ys2rt1M0MlozQKG88nZ8_UvfbC3tEpCyBN7c/edit#gid=2080377320"
+                },
+                "columns": {
+                    "mappingMode": "defineBelow",
+                    "value": {
+                        "Subject 5": "={{ $json.video_url }}",
+                        "Theme": "={{ $('get video progress').item.json.Theme }}"
+                    },
+                    "matchingColumns": [
+                        "Theme"
+                    ],
+                    "schema": [
+                        {
+                            "id": "Theme",
+                            "displayName": "Theme",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": false
+                        },
+                        {
+                            "id": "Subject 1",
+                            "displayName": "Subject 1",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "Subject 2",
+                            "displayName": "Subject 2",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "Subject 3",
+                            "displayName": "Subject 3",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "Subject 4",
+                            "displayName": "Subject 4",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "Subject 5",
+                            "displayName": "Subject 5",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": false
+                        },
+                        {
+                            "id": "Subject 6",
+                            "displayName": "Subject 6",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "row_number",
+                            "displayName": "row_number",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "readOnly": true,
+                            "removed": true
+                        }
+                    ],
+                    "attemptToConvertTypes": false,
+                    "convertFieldsToString": false
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.googleSheets",
+            "typeVersion": 4.5,
+            "position": [
+                -4320,
+                420
+            ],
+            "id": "a808c4f6-ec82-4438-8498-f12d601d10b1",
+            "name": "update video4",
+            "alwaysOutputData": true,
+            "credentials": {
+                "googleSheetsOAuth2Api": {
+                    "id": "kDHpIeRydLPGpkRY",
+                    "name": "Google Sheets account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "operation": "update",
+                "documentId": {
+                    "__rl": true,
+                    "value": "15X0xFl0Ys2rt1M0MlozQKG88nZ8_UvfbC3tEpCyBN7c",
+                    "mode": "list",
+                    "cachedResultName": "Faceless Shorts Template",
+                    "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15X0xFl0Ys2rt1M0MlozQKG88nZ8_UvfbC3tEpCyBN7c/edit?usp=drivesdk"
+                },
+                "sheetName": {
+                    "__rl": true,
+                    "value": 2080377320,
+                    "mode": "list",
+                    "cachedResultName": "video completions",
+                    "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15X0xFl0Ys2rt1M0MlozQKG88nZ8_UvfbC3tEpCyBN7c/edit#gid=2080377320"
+                },
+                "columns": {
+                    "mappingMode": "defineBelow",
+                    "value": {
+                        "Subject 6": "={{ $json.video_url }}",
+                        "Theme": "={{ $('get video progress').item.json.Theme }}"
+                    },
+                    "matchingColumns": [
+                        "Theme"
+                    ],
+                    "schema": [
+                        {
+                            "id": "Theme",
+                            "displayName": "Theme",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": false
+                        },
+                        {
+                            "id": "Subject 1",
+                            "displayName": "Subject 1",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "Subject 2",
+                            "displayName": "Subject 2",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "Subject 3",
+                            "displayName": "Subject 3",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "Subject 4",
+                            "displayName": "Subject 4",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "Subject 5",
+                            "displayName": "Subject 5",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": true
+                        },
+                        {
+                            "id": "Subject 6",
+                            "displayName": "Subject 6",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "removed": false
+                        },
+                        {
+                            "id": "row_number",
+                            "displayName": "row_number",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "type": "string",
+                            "canBeUsedToMatch": true,
+                            "readOnly": true,
+                            "removed": true
+                        }
+                    ],
+                    "attemptToConvertTypes": false,
+                    "convertFieldsToString": false
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.googleSheets",
+            "typeVersion": 4.5,
+            "position": [
+                -4320,
+                620
+            ],
+            "id": "9248c2e2-560b-4e23-ba25-0a503a7aa0a9",
+            "name": "update video5",
+            "alwaysOutputData": true,
+            "credentials": {
+                "googleSheetsOAuth2Api": {
+                    "id": "kDHpIeRydLPGpkRY",
+                    "name": "Google Sheets account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "assignments": {
+                    "assignments": [
+                        {
+                            "id": "1c48548e-a176-4d19-a4fc-2d5cc1520859",
+                            "name": "theme",
+                            "value": "={{ $('get video progress').item.json.Theme }}",
+                            "type": "string"
+                        },
+                        {
+                            "id": "c74606fc-f05c-49ad-b43b-2eb3185c8932",
+                            "name": "video1",
+                            "value": "={{ $('get video progress').item.json[\"Subject 1\"] }}",
+                            "type": "string"
+                        },
+                        {
+                            "id": "abc741bc-fdf8-407b-8419-dd52cc85d224",
+                            "name": "video2",
+                            "value": "={{ $('get video progress').item.json[\"Subject 2\"] }}",
+                            "type": "string"
+                        },
+                        {
+                            "id": "ad8d396a-806a-4869-9a4f-202d02ec47ee",
+                            "name": "video3",
+                            "value": "={{ $('get video progress').item.json[\"Subject 3\"] }}",
+                            "type": "string"
+                        },
+                        {
+                            "id": "fdd597f7-9642-458d-a537-e30856d66d8f",
+                            "name": "video4",
+                            "value": "={{ $('get video progress').item.json[\"Subject 4\"] }}",
+                            "type": "string"
+                        },
+                        {
+                            "id": "1361abac-4484-4a61-a930-3a2597fa4d12",
+                            "name": "video5",
+                            "value": "={{ $('get video progress').item.json[\"Subject 5\"] }}",
+                            "type": "string"
+                        },
+                        {
+                            "id": "61c0aad2-e569-40f1-b066-4ab91bc65940",
+                            "name": "video6",
+                            "value": "={{ $('get video progress').item.json[\"Subject 6\"] }}",
+                            "type": "string"
+                        },
+                        {
+                            "id": "0329a2c2-beff-4fa0-a5d0-94bc887918ea",
+                            "name": "subject1",
+                            "value": "={{ $('Get first todo').item.json[\"Subject 1\"] }}",
+                            "type": "string"
+                        },
+                        {
+                            "id": "be13d26b-9348-49b0-a682-0a82f3f072e3",
+                            "name": "subject2",
+                            "value": "={{ $('Get first todo').item.json[\"Subject 2\"] }}",
+                            "type": "string"
+                        },
+                        {
+                            "id": "8e958180-8e38-449c-a724-6ca3e07e9a87",
+                            "name": "subject3",
+                            "value": "={{ $('Get first todo').item.json[\"Subject 3\"] }}",
+                            "type": "string"
+                        },
+                        {
+                            "id": "a5f63dc3-d6ea-4657-b2ab-a1bc3ca3708c",
+                            "name": "subject4",
+                            "value": "={{ $('Get first todo').item.json[\"Subject 4\"] }}",
+                            "type": "string"
+                        },
+                        {
+                            "id": "96455466-13b2-4210-b6e6-254aa9423aba",
+                            "name": "subject5",
+                            "value": "={{ $('Get first todo').item.json[\"Subject 5\"] }}",
+                            "type": "string"
+                        },
+                        {
+                            "id": "d1b9146e-9a0e-4ad5-bc75-e3a5e5d91aad",
+                            "name": "subject6",
+                            "value": "={{ $('Get first todo').item.json[\"Subject 6\"] }}",
+                            "type": "string"
+                        },
+                        {
+                            "id": "eb42e7ee-128c-4be1-bfe2-b25913622e73",
+                            "name": "title",
+                            "value": "={{ $('Get first todo').item.json.title }}",
+                            "type": "string"
+                        },
+                        {
+                            "id": "e782fb99-232c-4b1f-9fad-9c756d8803b6",
+                            "name": "description",
+                            "value": "={{ $('Get first todo').item.json.Description }}",
+                            "type": "string"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.set",
+            "typeVersion": 3.4,
+            "position": [
+                -4320,
+                880
+            ],
+            "id": "5ac75824-77b1-4198-8b1d-d285f06be13a",
+            "name": "set info for rendering"
+        }
+    ],
+    "connections": {
+        "When clicking ‘Test workflow’": {
+            "main": [
+                [
+                    {
+                        "node": "Get first todo",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Render Video": {
+            "main": [
+                [
+                    {
+                        "node": "25 Seconds",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "25 Seconds": {
+            "main": [
+                [
+                    {
+                        "node": "Download Video",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Download Video": {
+            "main": [
+                [
+                    {
+                        "node": "Upload Video",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Upload Video": {
+            "main": [
+                [
+                    {
+                        "node": "Update sheet",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Schedule Trigger": {
+            "main": [
+                [
+                    {
+                        "node": "Get first todo",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Get first todo": {
+            "main": [
+                [
+                    {
+                        "node": "get image progress",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Update sheet": {
+            "main": [
+                []
+            ]
+        },
+        "Switch5": {
+            "main": [
+                [
+                    {
+                        "node": "set props",
+                        "type": "main",
+                        "index": 0
+                    }
+                ],
+                [
+                    {
+                        "node": "set props1",
+                        "type": "main",
+                        "index": 0
+                    }
+                ],
+                [
+                    {
+                        "node": "set props2",
+                        "type": "main",
+                        "index": 0
+                    }
+                ],
+                [
+                    {
+                        "node": "set props3",
+                        "type": "main",
+                        "index": 0
+                    }
+                ],
+                [
+                    {
+                        "node": "set props4",
+                        "type": "main",
+                        "index": 0
+                    }
+                ],
+                [
+                    {
+                        "node": "set props5",
+                        "type": "main",
+                        "index": 0
+                    }
+                ],
+                [
+                    {
+                        "node": "get video progress",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "If": {
+            "main": [
+                [
+                    {
+                        "node": "update subject in video completions1",
+                        "type": "main",
+                        "index": 0
+                    }
+                ],
+                [
+                    {
+                        "node": "Switch5",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "update subject in video completions": {
+            "main": [
+                [
+                    {
+                        "node": "get image progress",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "update subject in video completions1": {
+            "main": [
+                [
+                    {
+                        "node": "update subject in video completions",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Generate AI Image": {
+            "main": [
+                [
+                    {
+                        "node": "Update link",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "set props": {
+            "main": [
+                [
+                    {
+                        "node": "Generate AI Image",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "set props1": {
+            "main": [
+                [
+                    {
+                        "node": "Generate AI Image1",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "set props2": {
+            "main": [
+                [
+                    {
+                        "node": "Generate AI Image2",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "set props3": {
+            "main": [
+                [
+                    {
+                        "node": "Generate AI Image3",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "set props4": {
+            "main": [
+                [
+                    {
+                        "node": "Generate AI Image4",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "set props5": {
+            "main": [
+                [
+                    {
+                        "node": "Generate AI Image5",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Generate AI Image1": {
+            "main": [
+                [
+                    {
+                        "node": "Update link1",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Generate AI Image2": {
+            "main": [
+                [
+                    {
+                        "node": "Update link2",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Generate AI Image3": {
+            "main": [
+                [
+                    {
+                        "node": "Update link3",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Generate AI Image4": {
+            "main": [
+                [
+                    {
+                        "node": "Update link4",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Generate AI Image5": {
+            "main": [
+                [
+                    {
+                        "node": "Update link5",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "get video progress": {
+            "main": [
+                [
+                    {
+                        "node": "Switch6",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Switch6": {
+            "main": [
+                [
+                    {
+                        "node": "Generate AI video2",
+                        "type": "main",
+                        "index": 0
+                    }
+                ],
+                [
+                    {
+                        "node": "Generate AI video1",
+                        "type": "main",
+                        "index": 0
+                    }
+                ],
+                [
+                    {
+                        "node": "Generate AI video",
+                        "type": "main",
+                        "index": 0
+                    }
+                ],
+                [
+                    {
+                        "node": "Generate AI video3",
+                        "type": "main",
+                        "index": 0
+                    }
+                ],
+                [
+                    {
+                        "node": "Generate AI video4",
+                        "type": "main",
+                        "index": 0
+                    }
+                ],
+                [
+                    {
+                        "node": "Generate AI video5",
+                        "type": "main",
+                        "index": 0
+                    }
+                ],
+                [
+                    {
+                        "node": "set info for rendering",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Generate AI video1": {
+            "main": [
+                [
+                    {
+                        "node": "update video1",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "get image progress": {
+            "main": [
+                [
+                    {
+                        "node": "If",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Generate AI video2": {
+            "main": [
+                [
+                    {
+                        "node": "update video",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Generate AI video": {
+            "main": [
+                [
+                    {
+                        "node": "update video2",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Generate AI video3": {
+            "main": [
+                [
+                    {
+                        "node": "update video3",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Generate AI video4": {
+            "main": [
+                [
+                    {
+                        "node": "update video4",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Generate AI video5": {
+            "main": [
+                [
+                    {
+                        "node": "update video5",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "set info for rendering": {
+            "main": [
+                [
+                    {
+                        "node": "Render Video",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        }
+    },
+    "pinData": {},
+    "meta": {
+        "templateCredsSetupCompleted": true,
+        "instanceId": "9db6f740ec3407d10a945791c96c1908b9d7d99dc400ea95c24f023a760802c3"
+    }
+}

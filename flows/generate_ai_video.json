@@ -1,0 +1,668 @@
+{
+    "nodes": [
+        {
+            "parameters": {
+                "resource": "image",
+                "operation": "analyze",
+                "modelId": {
+                    "__rl": true,
+                    "value": "gpt-4o-mini",
+                    "mode": "list",
+                    "cachedResultName": "GPT-4O-MINI"
+                },
+                "text": "=Based on image provided, create a 2 line prompt that describes the movement of the central figure. The answer must be a valid raw JSON like the following:\n\nExample only:\n{\n  \"prompt\": \"The Devil Superman wals with confidence while smiling and walking towards the camera.\"\n}",
+                "imageUrls": "={{ $json.image_url }}",
+                "options": {}
+            },
+            "type": "@n8n/n8n-nodes-langchain.openAi",
+            "typeVersion": 1.8,
+            "position": [
+                -680,
+                -145
+            ],
+            "id": "5caec44f-ef0a-47dd-a96a-18e89c5f2be0",
+            "name": "create video prompt",
+            "credentials": {
+                "openAiApi": {
+                    "id": "cDISyTAOzA6TQdGi",
+                    "name": "OpenAi personal"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "modelId": {
+                    "__rl": true,
+                    "value": "gpt-3.5-turbo",
+                    "mode": "list",
+                    "cachedResultName": "GPT-3.5-TURBO"
+                },
+                "messages": {
+                    "values": [
+                        {
+                            "content": "=Extract the incoming prompt in raw text:\n\n{{ $json.content }}"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "type": "@n8n/n8n-nodes-langchain.openAi",
+            "typeVersion": 1.8,
+            "position": [
+                -460,
+                -145
+            ],
+            "id": "de3b9b17-4f35-402b-bdb3-25c4f04a8875",
+            "name": "OpenAI3",
+            "credentials": {
+                "openAiApi": {
+                    "id": "cDISyTAOzA6TQdGi",
+                    "name": "OpenAi personal"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "jsCode": "const jwt = require(\"jsonwebtoken\");\n\nconst accessKey = \"2d1c527e0c8f4714a4ca0efa0fd82db5\";  // Replace with your access key\nconst secretKey = \"45f68ddcd09544688b23d1c9d10b5bc9\";  // Replace with your secret key\n\nconst payload = {\n    iss: accessKey,\n    exp: Math.floor(Date.now() / 1000) + 1800, // Expiration time (30 minutes)\n    nbf: Math.floor(Date.now() / 1000) - 5  // Not before (5 seconds before now)\n};\n\nconst token = jwt.sign(payload, secretKey, { algorithm: \"HS256\" });\n\nreturn [{ json: { token } }];\n"
+            },
+            "type": "n8n-nodes-base.code",
+            "typeVersion": 2,
+            "position": [
+                -84,
+                -145
+            ],
+            "id": "e8dfbacb-7806-4ac7-85be-f7bad74f0106",
+            "name": "Code3"
+        },
+        {
+            "parameters": {
+                "rules": {
+                    "values": [
+                        {
+                            "conditions": {
+                                "options": {
+                                    "caseSensitive": true,
+                                    "leftValue": "",
+                                    "typeValidation": "strict",
+                                    "version": 2
+                                },
+                                "conditions": [
+                                    {
+                                        "id": "b790e07b-91a7-4a6a-914e-938fcda67144",
+                                        "leftValue": "={{ $json.data.task_status }}",
+                                        "rightValue": "failed",
+                                        "operator": {
+                                            "type": "string",
+                                            "operation": "equals",
+                                            "name": "filter.operator.equals"
+                                        }
+                                    }
+                                ],
+                                "combinator": "and"
+                            },
+                            "renameOutput": true,
+                            "outputKey": "failed"
+                        },
+                        {
+                            "conditions": {
+                                "options": {
+                                    "caseSensitive": true,
+                                    "leftValue": "",
+                                    "typeValidation": "strict",
+                                    "version": 2
+                                },
+                                "conditions": [
+                                    {
+                                        "id": "210a1886-de09-4577-8fe7-3d5a086485bc",
+                                        "leftValue": "={{ $json.data.task_status }}",
+                                        "rightValue": "succeed",
+                                        "operator": {
+                                            "type": "string",
+                                            "operation": "equals",
+                                            "name": "filter.operator.equals"
+                                        }
+                                    }
+                                ],
+                                "combinator": "and"
+                            },
+                            "renameOutput": true,
+                            "outputKey": "finished"
+                        },
+                        {
+                            "conditions": {
+                                "options": {
+                                    "caseSensitive": true,
+                                    "leftValue": "",
+                                    "typeValidation": "strict",
+                                    "version": 2
+                                },
+                                "conditions": [
+                                    {
+                                        "leftValue": "={{ $json.data.task_status }}",
+                                        "rightValue": "processing",
+                                        "operator": {
+                                            "type": "string",
+                                            "operation": "equals"
+                                        },
+                                        "id": "9540260a-ba26-4469-bd9e-2e768989fc4b"
+                                    }
+                                ],
+                                "combinator": "and"
+                            },
+                            "renameOutput": true,
+                            "outputKey": "processing"
+                        },
+                        {
+                            "conditions": {
+                                "options": {
+                                    "caseSensitive": true,
+                                    "leftValue": "",
+                                    "typeValidation": "strict",
+                                    "version": 2
+                                },
+                                "conditions": [
+                                    {
+                                        "id": "65235798-6296-4c0a-8ded-b60218abe215",
+                                        "leftValue": "={{ $json.data.task_status }}",
+                                        "rightValue": "submitted",
+                                        "operator": {
+                                            "type": "string",
+                                            "operation": "equals",
+                                            "name": "filter.operator.equals"
+                                        }
+                                    }
+                                ],
+                                "combinator": "and"
+                            },
+                            "renameOutput": true,
+                            "outputKey": "submitted"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.switch",
+            "typeVersion": 3.2,
+            "position": [
+                1236,
+                -366
+            ],
+            "id": "31e433fc-d109-4d16-afa0-975e5a0549db",
+            "name": "repeat until done3"
+        },
+        {
+            "parameters": {
+                "method": "POST",
+                "url": "https://api.klingai.com/v1/videos/image2video",
+                "sendHeaders": true,
+                "headerParameters": {
+                    "parameters": [
+                        {
+                            "name": "Authorization",
+                            "value": "=Bearer {{ $('Code3').item.json.token }}"
+                        }
+                    ]
+                },
+                "sendBody": true,
+                "specifyBody": "json",
+                "jsonBody": "={\n    \"model_name\": \"kling-v1-6\",\n    \"mode\": \"pro\",\n    \"duration\": \"10\",\n    \"image\": \"{{ $json.url }}\",\n    \"prompt\": \"{{ $json.prompt }}\",\n    \"cfg_scale\": 0.8\n}",
+                "options": {}
+            },
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 4.2,
+            "position": [
+                576,
+                -345
+            ],
+            "id": "00bbd4c0-2145-4ec4-8a52-88f9745feb92",
+            "name": "generate video with kling"
+        },
+        {
+            "parameters": {
+                "workflowInputs": {
+                    "values": [
+                        {
+                            "name": "image_url"
+                        }
+                    ]
+                }
+            },
+            "type": "n8n-nodes-base.executeWorkflowTrigger",
+            "typeVersion": 1.1,
+            "position": [
+                -900,
+                -145
+            ],
+            "id": "0373ad2d-232b-492e-8c5f-c7c3e7327f46",
+            "name": "When Executed by Another Workflow"
+        },
+        {
+            "parameters": {
+                "url": "=https://api.klingai.com/v1/videos/image2video/{{ $('generate video with kling').item.json.request_id }}",
+                "sendHeaders": true,
+                "headerParameters": {
+                    "parameters": [
+                        {
+                            "name": "Authorization",
+                            "value": "=Bearer {{ $('Code3').item.json.token }}"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 4.2,
+            "position": [
+                1016,
+                -420
+            ],
+            "id": "39279269-06a9-4b14-a952-c0af59c180bc",
+            "name": "get video",
+            "onError": "continueRegularOutput"
+        },
+        {
+            "parameters": {
+                "assignments": {
+                    "assignments": [
+                        {
+                            "id": "0990a697-42a7-4dad-b54b-8c88d4eb39cf",
+                            "name": "video_url",
+                            "value": "={{ $json.data.task_result.videos[0].url }}",
+                            "type": "string"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.set",
+            "typeVersion": 3.4,
+            "position": [
+                1456,
+                -345
+            ],
+            "id": "e23a6b80-0a5f-4c28-91e9-4852504f4fcb",
+            "name": "Set response"
+        },
+        {
+            "parameters": {
+                "rules": {
+                    "values": [
+                        {
+                            "conditions": {
+                                "options": {
+                                    "caseSensitive": true,
+                                    "leftValue": "",
+                                    "typeValidation": "strict",
+                                    "version": 2
+                                },
+                                "conditions": [
+                                    {
+                                        "leftValue": "true",
+                                        "rightValue": "true",
+                                        "operator": {
+                                            "type": "string",
+                                            "operation": "equals"
+                                        },
+                                        "id": "0d703f91-bc86-405f-8842-7e273ce7439f"
+                                    }
+                                ],
+                                "combinator": "and"
+                            }
+                        },
+                        {
+                            "conditions": {
+                                "options": {
+                                    "caseSensitive": true,
+                                    "leftValue": "",
+                                    "typeValidation": "strict",
+                                    "version": 2
+                                },
+                                "conditions": [
+                                    {
+                                        "id": "86b6f627-03d7-4119-8bc9-7f388c05632e",
+                                        "leftValue": "true",
+                                        "rightValue": "true",
+                                        "operator": {
+                                            "type": "string",
+                                            "operation": "equals",
+                                            "name": "filter.operator.equals"
+                                        }
+                                    }
+                                ],
+                                "combinator": "and"
+                            }
+                        },
+                        {
+                            "conditions": {
+                                "options": {
+                                    "caseSensitive": true,
+                                    "leftValue": "",
+                                    "typeValidation": "strict",
+                                    "version": 2
+                                },
+                                "conditions": [
+                                    {
+                                        "id": "8ff6d923-f221-4e03-a8cd-5f5953beb37c",
+                                        "leftValue": "true",
+                                        "rightValue": "true",
+                                        "operator": {
+                                            "type": "string",
+                                            "operation": "equals",
+                                            "name": "filter.operator.equals"
+                                        }
+                                    }
+                                ],
+                                "combinator": "and"
+                            }
+                        },
+                        {
+                            "conditions": {
+                                "options": {
+                                    "caseSensitive": true,
+                                    "leftValue": "",
+                                    "typeValidation": "strict",
+                                    "version": 2
+                                },
+                                "conditions": [
+                                    {
+                                        "id": "50bf12b4-8d85-40a8-9f6b-d1531530dbb2",
+                                        "leftValue": "true",
+                                        "rightValue": "true",
+                                        "operator": {
+                                            "type": "string",
+                                            "operation": "equals",
+                                            "name": "filter.operator.equals"
+                                        }
+                                    }
+                                ],
+                                "combinator": "and"
+                            }
+                        }
+                    ]
+                },
+                "options": {
+                    "allMatchingOutputs": true
+                }
+            },
+            "type": "n8n-nodes-base.switch",
+            "typeVersion": 3.2,
+            "position": [
+                136,
+                -166
+            ],
+            "id": "54f88583-cb8f-4c33-8016-e18f43b63a0e",
+            "name": "Switch"
+        },
+        {
+            "parameters": {
+                "assignments": {
+                    "assignments": [
+                        {
+                            "id": "b0bc1f8f-1249-4c33-a8c5-31d830e97c54",
+                            "name": "prompt",
+                            "value": "man looks around then looks to camera and gives a confident smile",
+                            "type": "string"
+                        },
+                        {
+                            "id": "60355cb9-ef8b-4f81-af87-4ebe62bccddd",
+                            "name": "url",
+                            "value": "https://i.ibb.co/5x6LgH1q/capitao-br.jpg",
+                            "type": "string"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.set",
+            "typeVersion": 3.4,
+            "position": [
+                356,
+                -345
+            ],
+            "id": "876ef074-a586-46d7-b548-5ba2026bed65",
+            "name": "capitao br"
+        },
+        {
+            "parameters": {
+                "assignments": {
+                    "assignments": [
+                        {
+                            "id": "b0bc1f8f-1249-4c33-a8c5-31d830e97c54",
+                            "name": "prompt",
+                            "value": "",
+                            "type": "string"
+                        },
+                        {
+                            "id": "60355cb9-ef8b-4f81-af87-4ebe62bccddd",
+                            "name": "url",
+                            "value": "https://i.ibb.co/5x6LgH1q/capitao-br.jpg",
+                            "type": "string"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.set",
+            "typeVersion": 3.4,
+            "position": [
+                356,
+                -145
+            ],
+            "id": "1b0732f3-cde0-465e-ae3c-e7b7cbe025ae",
+            "name": "mulher maravilha"
+        },
+        {
+            "parameters": {
+                "assignments": {
+                    "assignments": [
+                        {
+                            "id": "b0bc1f8f-1249-4c33-a8c5-31d830e97c54",
+                            "name": "prompt",
+                            "value": "",
+                            "type": "string"
+                        },
+                        {
+                            "id": "60355cb9-ef8b-4f81-af87-4ebe62bccddd",
+                            "name": "url",
+                            "value": "https://i.ibb.co/5x6LgH1q/capitao-br.jpg",
+                            "type": "string"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.set",
+            "typeVersion": 3.4,
+            "position": [
+                356,
+                55
+            ],
+            "id": "baf3e8bf-ce3e-4c68-b868-d9ac61ae906e",
+            "name": "homem aranha"
+        },
+        {
+            "parameters": {
+                "amount": 15
+            },
+            "type": "n8n-nodes-base.wait",
+            "typeVersion": 1.1,
+            "position": [
+                796,
+                -345
+            ],
+            "id": "377890ea-d85f-4886-8435-511ed3355bb9",
+            "name": "Wait",
+            "webhookId": "f6a4cc41-82d1-47c5-b8fc-c8263e4a7df4"
+        }
+    ],
+    "connections": {
+        "create video prompt": {
+            "main": [
+                [
+                    {
+                        "node": "OpenAI3",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "OpenAI3": {
+            "main": [
+                [
+                    {
+                        "node": "Code3",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Code3": {
+            "main": [
+                [
+                    {
+                        "node": "Switch",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "repeat until done3": {
+            "main": [
+                [],
+                [
+                    {
+                        "node": "Set response",
+                        "type": "main",
+                        "index": 0
+                    }
+                ],
+                [
+                    {
+                        "node": "Wait",
+                        "type": "main",
+                        "index": 0
+                    }
+                ],
+                [
+                    {
+                        "node": "Wait",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "generate video with kling": {
+            "main": [
+                [
+                    {
+                        "node": "Wait",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "When Executed by Another Workflow": {
+            "main": [
+                [
+                    {
+                        "node": "create video prompt",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "get video": {
+            "main": [
+                [
+                    {
+                        "node": "repeat until done3",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Switch": {
+            "main": [
+                [
+                    {
+                        "node": "capitao br",
+                        "type": "main",
+                        "index": 0
+                    }
+                ],
+                [
+                    {
+                        "node": "mulher maravilha",
+                        "type": "main",
+                        "index": 0
+                    }
+                ],
+                [
+                    {
+                        "node": "homem aranha",
+                        "type": "main",
+                        "index": 0
+                    }
+                ],
+                []
+            ]
+        },
+        "capitao br": {
+            "main": [
+                [
+                    {
+                        "node": "generate video with kling",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "mulher maravilha": {
+            "main": [
+                []
+            ]
+        },
+        "homem aranha": {
+            "main": [
+                []
+            ]
+        },
+        "Wait": {
+            "main": [
+                [
+                    {
+                        "node": "get video",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        }
+    },
+    "pinData": {
+        "generate video with kling": [
+            {
+                "code": 0,
+                "message": "SUCCEED",
+                "request_id": "ChFolWfhcTwAAAAAACA0lw",
+                "data": {
+                    "task_id": "ChFolWfhcTwAAAAAACA0lw",
+                    "task_status": "submitted",
+                    "created_at": 1742874801234,
+                    "updated_at": 1742874801234
+                }
+            }
+        ]
+    },
+    "meta": {
+        "instanceId": "9db6f740ec3407d10a945791c96c1908b9d7d99dc400ea95c24f023a760802c3"
+    }
+}
